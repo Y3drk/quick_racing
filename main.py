@@ -2,6 +2,8 @@ import pygame as pg
 from vector2d import Vector2D
 from car import Car
 from map import Map
+from wall import Wall
+
 
 class Engine:
     def __init__(self, refresh_rate):
@@ -11,12 +13,18 @@ class Engine:
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
+
     def run(self):
         car = Car(0, Vector2D(10,10), 1, 0, 1)
         car_img = pg.image.load("./data/car.png")
         map = Map(0, 1000, 300, car)
         map_img = pg.image.load("./data/grass.png")
         run = True
+
+        #walls for physics testing
+        wall1 = Wall(Vector2D(20, 100), Vector2D(20, 80))
+
+
         while run:
             dt = self.clock.tick(self.refresh)
             self.screen.blit(map_img, (0, 0))
