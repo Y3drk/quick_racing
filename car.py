@@ -1,7 +1,7 @@
 from vector2d import Vector2D
 from math import sin, cos, radians
 
-class Car:
+class Car: #https://asawicki.info/Mirror/Car%20Physics%20for%20Games/Car%20Physics%20for%20Games.html
     def __init__(self, id, position, speed, direction, rotation):
         self.id = id
         self.position = position

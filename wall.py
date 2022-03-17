@@ -1,6 +1,5 @@
 from vector2d import Vector2D
 
-
 class Wall:
     def __init__(self, lower_left_corner: Vector2D, upper_right_corner: Vector2D):
         self.lower_left_corner = lower_left_corner

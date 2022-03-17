@@ -4,7 +4,6 @@ from car import Car
 from map import Map
 from wall import Wall
 
-
 class Engine:
     def __init__(self, refresh_rate):
         self.refresh = refresh_rate

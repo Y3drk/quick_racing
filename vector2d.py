@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 class Vector2D:
     def __init__(self, x, y):
         self.x = x
