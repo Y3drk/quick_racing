@@ -37,7 +37,7 @@ class Engine:
                 car.rotate_left(dt)
             if pressed[pg.K_RIGHT]:
                 car.rotate_right(dt)
-            
+
             car.move(dt)
             
             for event in pg.event.get():
