@@ -20,3 +20,4 @@ class Wall(pg.sprite.Sprite):
         elif angle >= 360:
             angle -= 360
         return angle
+    

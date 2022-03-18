@@ -17,16 +17,15 @@ class Engine:
         wall1 = Wall(Vector2D(20, 100), Vector2D(20, 80))
         car = Car(0, Vector2D(10,10), 0, 0, 60, 30)
         car_img = pg.image.load("./data/car.png")
-        map = Map(0, 1000, 300, car, None)
+        map = Map(0, 1000, 300, car, [wall1])
         map_img = pg.image.load("./data/grass.png")
         run = True
-
-        
 
         while run:
             dt = self.clock.tick(self.refresh)
             self.screen.blit(map_img, (0, 0))
             self.screen.blit(car_img, (car.position.x, car.position.y))
+            pg.draw.rect(self.screen,(0,0,0),[20,20,20,20])
             
             pressed = pg.key.get_pressed()
             if pressed[pg.K_UP]:
@@ -38,6 +37,7 @@ class Engine:
             if pressed[pg.K_RIGHT]:
                 car.rotate_right(dt)
 
+            map.collision_test()
             car.move(dt)
             
             for event in pg.event.get():
