@@ -5,7 +5,7 @@ from map import Map
 from wall import Wall
 from math import sqrt
 
-#TO DO
+#TODO
 def choose_collision_place(x, y, wall: Wall):
     closest_distance = float('inf')
     chosen_block_place = None
@@ -44,10 +44,6 @@ def choose_collision_place(x, y, wall: Wall):
         chosen_block_place = wall.rect.bottom
 
     return chosen_block_place
-
-
-
-
 
 class Engine:
     def __init__(self, refresh_rate):
@@ -113,7 +109,6 @@ def main():
     #choose_collision_place(0, 0, Wall(Vector2D(40, 40), 20, 20))
     engine = Engine(60)
     engine.run()
-
 
 if __name__ == "__main__":
     main()

@@ -2,17 +2,14 @@ import pygame as pg
 from vector2d import Vector2D
 from math import sin, cos, radians
 
-
-class Car(pg.sprite.Sprite): #https://asawicki.info/Mirror/Car%20Physics%20for%20Games/Car%20Physics%20for%20Games.html
+class Car(pg.sprite.Sprite):
     def __init__(self, id, position, speed, direction, rotation, engine):
-        #super().__init__()
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load("./data/car.png").convert()
         #self.image.fill((0, 0, 0))
         self.image.set_colorkey((255, 255, 255))  # this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
         self.rect.center = (position.x, position.y)
-
 
         self.id = id
         self.position = position
@@ -45,18 +42,18 @@ class Car(pg.sprite.Sprite): #https://asawicki.info/Mirror/Car%20Physics%20for%2
             self.rect.right = 0
 
 
-    def collision(self, wall):
-        self.direction += 180 - abs(self.direction - wall.get_facing)
+    #def collision(self, wall):
+    #    self.direction += 180 - abs(self.direction - wall.get_facing)
 
     def rotate_left(self, dt):
         if self.speed != 0:
-            self.direction -= 2 * self.rotation/(dt * self.speed)
+            self.direction -= 3 * self.speed * self.rotation/(dt**2)
             if self.direction < 0:
                 self.direction += 360
 
     def rotate_right(self, dt):
         if self.speed != 0:
-            self.direction += 2 * self.rotation/(dt * self.speed)
+            self.direction += 3 * self.speed * self.rotation/(dt**2)
             if self.direction > 360:
                 self.direction -= 360
 
