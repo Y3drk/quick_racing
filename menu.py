@@ -14,21 +14,26 @@ class Menu:
     #
     #              authors
     def __init__(self):
+        pg.font.init()
         pg.init()
         self.width = 1080
         self.height = 720
         self.screen = pg.display.set_mode((self.width, self.height))
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
-        font = pg.font.SysFont('Corbel', 35)
-        play_text = font.render('Play', True, white)
-        leaderboard_text = font.render('Leaderboard', True, white)
-        settings_text = font.render('Settings', True, white)
-        quit_text = font.render('Quit', True, white)
         
     def run(self):
         run = True
         while run:
+            
+            font = pg.font.SysFont('Corbel', 35)
+            play_text = font.render('Play', False, white)
+            play_txt = play_text.get_rect()
+            play_txt.center = (540,380) #doesnt show up???
+            leaderboard_text = font.render('Leaderboard', False, white)
+            settings_text = font.render('Settings', False, white)
+            quit_text = font.render('Quit', False, white)
+            
             pos = self.pointing()
             play_color, leaderboard_color, settings_color, quit_color = color_dark, color_dark, color_dark, color_dark
             if pos == 0:
@@ -58,7 +63,7 @@ class Menu:
                 
                 if event.type == pg.QUIT:
                     run = False
-            pg.display.flip()
+            pg.display.update()
     
     def pointing(self):
         pos = None
