@@ -40,10 +40,10 @@ class Menu:
             elif pos == 3:
                 quit_color = color_light
             
-            pg.draw.rect(self.screen, play_color, [self.width/2 - 180, self.height/2 + 175, 360, 80])
-            pg.draw.rect(self.screen, leaderboard_color, [self.width/2 - 180, self.height/2 + 85, 360, 80])
-            pg.draw.rect(self.screen, settings_color, [self.width/2 - 180, self.height/2 - 5, 360, 80])
-            pg.draw.rect(self.screen, quit_color, [self.width/2 - 180, self.height/2 - 95, 360, 80])
+            pg.draw.rect(self.screen, play_color, [self.width/2 - 180, self.height/2 - 175, 360, 80])
+            pg.draw.rect(self.screen, leaderboard_color, [self.width/2 - 180, self.height/2 - 85, 360, 80])
+            pg.draw.rect(self.screen, settings_color, [self.width/2 - 180, self.height/2 + 5, 360, 80])
+            pg.draw.rect(self.screen, quit_color, [self.width/2 - 180, self.height/2 + 95, 360, 80])
             
             for event in pg.event.get():
                 if event.type == pg.MOUSEBUTTONDOWN:
@@ -65,14 +65,19 @@ class Menu:
         pos = None
         mouse = pg.mouse.get_pos()
         if abs(mouse[0] - self.width/2) <= 180:
-            if abs(mouse[1] - self.height/2 - 135) <= 40: #play button
+            print(self.height/2 - 175 <= mouse[1] <= self.height/2 - 95, mouse)
+            if self.height/2 - 175 <= mouse[1] <= self.height/2 - 95: #play button
                 pos = 0
-            elif abs(mouse[1] - self.height/2 - 45) <= 40: #leaderboard button
+                print(mouse, pos)
+            elif self.height/2 - 85 <= mouse[1] <= self.height/2 - 5: #leaderboard button
                 pos = 1
-            elif abs(mouse[1] - self.height/2 + 45) <= 40: #settings button
+                print(mouse, pos)
+            elif self.height/2 + 5 <= mouse[1] <= self.height/2 + 85: #settings button
                 pos = 2
-            elif abs(mouse[1] - self.height/2 + 135) <= 40: #quit button
+                print(mouse, pos)
+            elif self.height/2 + 95 <= mouse[1] <= self.height/2 + 175: #quit button
                 pos = 3
+                print(mouse, pos)
         return pos
           
 menu = Menu()
