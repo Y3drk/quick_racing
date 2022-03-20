@@ -47,7 +47,6 @@ class Menu:
             
             for event in pg.event.get():
                 if event.type == pg.MOUSEBUTTONDOWN:
-                    print(pg.mouse.get_pos())
                     if pos == 0: #play button
                         print("start")
                     if pos == 1: #leaderboard button
@@ -65,19 +64,14 @@ class Menu:
         pos = None
         mouse = pg.mouse.get_pos()
         if abs(mouse[0] - self.width/2) <= 180:
-            print(self.height/2 - 175 <= mouse[1] <= self.height/2 - 95, mouse)
             if self.height/2 - 175 <= mouse[1] <= self.height/2 - 95: #play button
                 pos = 0
-                print(mouse, pos)
             elif self.height/2 - 85 <= mouse[1] <= self.height/2 - 5: #leaderboard button
                 pos = 1
-                print(mouse, pos)
             elif self.height/2 + 5 <= mouse[1] <= self.height/2 + 85: #settings button
                 pos = 2
-                print(mouse, pos)
             elif self.height/2 + 95 <= mouse[1] <= self.height/2 + 175: #quit button
                 pos = 3
-                print(mouse, pos)
         return pos
           
 menu = Menu()
