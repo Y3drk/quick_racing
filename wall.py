@@ -10,7 +10,10 @@ class Wall(pg.sprite.Sprite):
         self.image.fill((0, 0, 0))
         self.image.set_colorkey((255, 255, 255)) #this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
-        self.rect.center = (position.x, position.y)
+        self.rect.x = position.x
+        self.rect.y = position.y
+        self.width = width
+        self.height = height
 
     # def get_facing(self):
     #     x_diff = self.lower_left_corner.x - self.upper_right_corner.x

@@ -38,8 +38,8 @@ class Car(pg.sprite.Sprite):
         self.rect.x = self.position.x
         self.rect.y = self.position.y
 
-        if self.rect.left > 400: #for now hardcoded
-            self.rect.right = 0
+        # if self.rect.left > 400: #for now hardcoded
+        #     self.rect.right = 0
 
 
     #def collision(self, wall):

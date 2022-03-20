@@ -19,3 +19,12 @@ class Vector2D:
 
     def add_vector(self, other: Vector2D):
         return Vector2D(self.x + other.x, self.y + other.x)
+
+    def set_y(self, y):
+        self.y = y
+
+    def set_x(self, x):
+        self.x = x
+
+    def print(self):
+        print("x: ", self.x, ", y: ", self.y)
