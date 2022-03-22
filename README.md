@@ -1,5 +1,5 @@
 # quick_racing
-This project is a dexterity game created for Programming in Python course,
+Is a dexterity game created for Programming in Python course,
 on semester 4 year 2 on Computer Science at UST.
 
 ## Basic description
