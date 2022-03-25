@@ -63,6 +63,9 @@ class Engine:
     def run(self):
         wall1 = Wall(Vector2D(150, 150), 60, 60)
         self.all_walls.add(wall1) # beginning of sprites
+        wall2 = Wall(Vector2D(130, 150), 60, 20)
+        self.all_walls.add(wall2)  # beginning of sprites
+
 
         traction = 0.15
 
@@ -88,9 +91,9 @@ class Engine:
             collisions = pg.sprite.spritecollide(car, self.all_walls, False)
 
             if collisions: # it's a list of objects/sprites that collided with the car
-                print(collisions)
-                car.position = new_collision_place(car.position.x, car.position.y, collisions[0], car)
-                car.speed = -car.speed * traction   # well the setter is needed
+                for col in collisions:
+                    car.position = new_collision_place(car.position.x, car.position.y, col, car)
+                    car.speed = -car.speed * traction   # well the setter is needed
 
 
             for event in pg.event.get():
