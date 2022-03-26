@@ -1,13 +1,14 @@
 import pygame as pg
 from vector2d import Vector2D
 from math import sin, cos, radians
+WHITE = (255,255,255)
 
 class Car(pg.sprite.Sprite):
     def __init__(self, id, position, speed, direction, rotation, engine):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load("./data/car.png").convert()
+        self.image = pg.image.load("./data/supra.png").convert()
         #self.image.fill((0, 0, 0))
-        self.image.set_colorkey((255, 255, 255))  # this will make the img ignore all the white pixels
+        self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
         self.rect.center = (position.x, position.y)
 
@@ -48,12 +49,14 @@ class Car(pg.sprite.Sprite):
     def rotate_left(self, dt):
         if self.speed != 0:
             self.direction -= 3 * self.speed * self.rotation/(dt**2)
+            #self.image = pg.transform.rotate(self.image, 3 * self.speed * self.rotation/(dt**2)) doesn't work as expected
             if self.direction < 0:
                 self.direction += 360
 
     def rotate_right(self, dt):
         if self.speed != 0:
             self.direction += 3 * self.speed * self.rotation/(dt**2)
+            #self.image = pg.transform.rotate(self.image, 3 * self.speed * self.rotation / (dt ** 2)) as above
             if self.direction > 360:
                 self.direction -= 360
 

@@ -49,7 +49,7 @@ class Engine:
     def __init__(self, refresh_rate):
         self.refresh = refresh_rate
         pg.init()
-        self.screen = pg.display.set_mode((400,300))
+        self.screen = pg.display.set_mode((1000,700))
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()

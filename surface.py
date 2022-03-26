@@ -5,7 +5,7 @@ from surfaceType import SurfaceType
 
 
 class Surface(pg.sprite.Sprite):
-    def __init__(self, position: Vector2D, width: int, height: int, fraction: SurfaceType.value):
+    def __init__(self, position: Vector2D, width: int, height: int, fraction: SurfaceType):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((width, height))
         self.image.fill((255, 255, 255)) #for now it's all white but we should figure out how to colour it differently
@@ -15,4 +15,8 @@ class Surface(pg.sprite.Sprite):
         self.rect.y = position.y
         self.width = width
         self.height = height
-        self.fraction = fraction
+        self.fraction = fraction.value
+
+        if fraction == SurfaceType.ASPHALT:
+            pass
+
