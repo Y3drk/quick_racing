@@ -1,4 +1,6 @@
 import pygame as pg
+from engine import Engine
+from leaderboard import Leaderboard
 
 white = (255,255,255)
 color_light = (170,170,170)
@@ -25,7 +27,6 @@ class Menu:
     def run(self):
         run = True
         while run:
-            
             font = pg.font.SysFont('Corbel', 35)
             play_text = font.render('Play', False, white)
             play_txt = play_text.get_rect()
@@ -54,8 +55,14 @@ class Menu:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if pos == 0: #play button
                         print("start")
+                        engine = Engine(60)
+                        engine.run()
+                        run = False
                     if pos == 1: #leaderboard button
                         print("leaderboard")
+                        leaderboard = Leaderboard()
+                        leaderboard.run()
+                        run = False
                     if pos == 2: #settings button
                         print("settings")
                     if pos == 3: #quit button
@@ -78,6 +85,7 @@ class Menu:
             elif self.height/2 + 95 <= mouse[1] <= self.height/2 + 175: #quit button
                 pos = 3
         return pos
-          
-menu = Menu()
-menu.run()
+
+if __name__ == "__main__":
+    menu = Menu()
+    menu.run()
