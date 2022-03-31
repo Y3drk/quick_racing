@@ -3,7 +3,6 @@ import pygame as pg
 from vector2d import Vector2D
 from surfaceType import SurfaceType
 
-
 class Surface(pg.sprite.Sprite):
     def __init__(self, position: Vector2D, width: int, height: int, fraction: SurfaceType):
         pg.sprite.Sprite.__init__(self)
@@ -19,5 +18,3 @@ class Surface(pg.sprite.Sprite):
 
     def adjust_fraction(self):
         return self.fraction
-
-

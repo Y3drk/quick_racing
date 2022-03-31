@@ -41,4 +41,7 @@ class Booster (pg.sprite.Sprite):
                 pass
 
             # we gotta find a way to make it last only a short amount of time -> like 3 seconds or so
+            
+            #we can use dt
+            #we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
 

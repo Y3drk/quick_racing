@@ -6,7 +6,7 @@ from wall import Wall
 from surface import Surface
 from surfaceType import SurfaceType
 
-#TODO
+#TODO XD
 
 def new_collision_place(x,y, wall: Wall, car : Car):
     options = []
@@ -62,6 +62,8 @@ class Engine:
     # them and add them all to sprite group,
     # same probably could be done with ground types -> we can also handle fraction using collisions :)
     # also I think it would be beneficial if all_walls were an attribute of the map
+    
+    #thought exactly the same thing
 
     def run(self):
         wall1 = Wall(Vector2D(250, 300), 60, 60, False)
