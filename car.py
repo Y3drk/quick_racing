@@ -1,7 +1,9 @@
 import pygame as pg
 from vector2d import Vector2D
 from math import sin, cos, radians
-WHITE = (255,255,255)
+
+WHITE = (255, 255, 255)
+
 
 class Car(pg.sprite.Sprite):
     def __init__(self, id, position, speed, direction, rotation, engine):
