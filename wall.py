@@ -4,16 +4,31 @@ from math import sqrt, acos
 
 
 class Wall(pg.sprite.Sprite):
-    def __init__(self, position: Vector2D, width: int, height: int):
+    def __init__(self, position: Vector2D, width: int, height: int, with_tires: bool):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((width, height))
-        self.image.fill((0, 0, 0))
-        self.image.set_colorkey((255, 255, 255)) #this will make the img ignore all the white pixels
+
+        if with_tires:
+            self.image = pg.image.load("./data/tirewall3.png").convert()
+            self.image.set_colorkey((0, 0, 0))
+
+        else:
+            self.image.fill((192, 192, 192))
+            self.image.set_colorkey((255, 255, 255)) #this will make the img ignore all the white pixels
+            self.width = width
+            self.height = height
+
         self.rect = self.image.get_rect()
         self.rect.x = position.x
         self.rect.y = position.y
-        self.width = width
-        self.height = height
+
+        if with_tires:
+            self.width = position.x - self.rect.right
+            self.height = position.y - self.rect.bottom
+
+        else:
+            self.width = width
+            self.height = height
 
     # def get_facing(self):
     #     x_diff = self.lower_left_corner.x - self.upper_right_corner.x

@@ -3,6 +3,8 @@ from vector2d import Vector2D
 from car import Car
 from map import Map
 from wall import Wall
+from surface import Surface
+from surfaceType import SurfaceType
 
 #TODO
 
@@ -54,6 +56,7 @@ class Engine:
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
         self.all_walls = pg.sprite.Group()
+        self.all_surfaces = pg.sprite.Group()
 
     # btw that's how we can load the map -> read all walls size and location from CSV then create
     # them and add them all to sprite group,
@@ -61,10 +64,15 @@ class Engine:
     # also I think it would be beneficial if all_walls were an attribute of the map
 
     def run(self):
-        wall1 = Wall(Vector2D(150, 150), 60, 60)
+        wall1 = Wall(Vector2D(250, 300), 60, 60, False)
         self.all_walls.add(wall1) # beginning of sprites
-        wall2 = Wall(Vector2D(130, 150), 60, 20)
+        wall2 = Wall(Vector2D(20, 150), 60, 20, True)
         self.all_walls.add(wall2)  # beginning of sprites
+
+        surface1 = Surface(Vector2D(150, 20), 100, 50, SurfaceType.ASPHALT)
+        self.all_surfaces.add(surface1)
+        surface2 = Surface(Vector2D(400, 200), 100, 80, SurfaceType.ICE)
+        self.all_surfaces.add(surface2)
 
 
         traction = 0.15
@@ -78,23 +86,33 @@ class Engine:
         while run:
             dt = self.clock.tick(self.refresh)
             self.screen.blit(map_img, (0, 0))
+
+            self.all_surfaces.draw(self.screen)
+            self.all_surfaces.update()
+
             self.screen.blit(car.image, (car.position.x, car.position.y))
             #self.all_cars.draw(self.screen)
             #added
-            self.all_walls.draw(self.screen)
 
+            self.all_walls.draw(self.screen)
+            self.all_walls.update()
 
             car.update(dt)
             car.move(dt) # maybe car also should be coded as a sprite???
-            self.all_walls.update()
 
             collisions = pg.sprite.spritecollide(car, self.all_walls, False)
-
             if collisions: # it's a list of objects/sprites that collided with the car
                 for col in collisions:
                     car.position = new_collision_place(car.position.x, car.position.y, col, car)
                     car.speed = -car.speed * traction   # well the setter is needed
 
+            slides = pg.sprite.spritecollide(car, self.all_surfaces, False)
+            if slides:
+                #print("surface here")
+                for slide in slides:
+                    traction = slide.adjust_fraction()
+
+            #print(traction) no we have to include different surfaces in the movement of the car
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
