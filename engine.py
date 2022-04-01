@@ -6,6 +6,7 @@ from map import Map
 from wall import Wall
 from surface import Surface
 from surfaceType import SurfaceType
+from stopwatch import Stopwatch
 
 
 def new_collision_place(x,y, wall: Wall, car : Car):
@@ -47,12 +48,11 @@ def new_collision_place(x,y, wall: Wall, car : Car):
         return Vector2D(x, wall.rect.top - car.rect.h)
 
 
-
 class Engine:
     def __init__(self, refresh_rate):
         self.refresh = refresh_rate
         pg.init()
-        self.screen = pg.display.set_mode((1000,700))
+        self.screen = pg.display.set_mode((1000, 700))
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
@@ -64,7 +64,10 @@ class Engine:
     # same probably could be done with ground types -> we can also handle fraction using collisions :)
     # also I think it would be beneficial if all_walls were an attribute of the map
     
-    #thought exactly the same thing
+    #thought exactly the same thing :) -> can be done today during labs
+
+    def start_timer(self):
+        return Stopwatch(self.screen, self.clock, Vector2D(800, 50))
 
     def run(self):
         wall1 = Wall(Vector2D(250, 300), 60, 60, False)
@@ -85,6 +88,8 @@ class Engine:
         map = Map(0, 1000, 300, car, None)
         map_img = pg.image.load("./data/grass.png")
         run = True
+
+        stopwatch = self.start_timer()
 
         while run:
             dt = self.clock.tick(self.refresh)
@@ -120,4 +125,9 @@ class Engine:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     run = False
+
+            ticks = pg.time.get_ticks()
+            stopwatch.display_timer(ticks)
+
+
             pg.display.flip()
