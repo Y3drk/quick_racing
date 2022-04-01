@@ -1,4 +1,4 @@
-
+from __future__ import annotations
 import pygame as pg
 from vector2d import Vector2D
 from car import Car

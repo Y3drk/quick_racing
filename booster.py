@@ -47,4 +47,5 @@ class Booster (pg.sprite.Sprite):
             
             #we can use dt
             #we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
+            # -maybe maybe
 
