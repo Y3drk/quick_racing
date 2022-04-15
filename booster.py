@@ -1,8 +1,9 @@
+from __future__ import annotations
 import pygame as pg
 from vector2d import Vector2D
-from __future__ import annotations
 from car import Car
 from boosterType import BoosterType
+from stopwatch import Stopwatch
 
 
 class Booster (pg.sprite.Sprite):
@@ -21,9 +22,11 @@ class Booster (pg.sprite.Sprite):
 
         self.position = position
 
-    def activate(self, car: Car):
+    def activate(self, car: Car, stopwatch: Stopwatch):
             if self.type == BoosterType.SPEED:
                 car.speed += self.int_booster_value
+                #sleep(3)
+                #car.speed -= self.int_booster_value  -> idea for implementing duration!
 
             elif self.type == BoosterType.TURNING: #turning is smoother/faster or slower
                 pass
@@ -32,7 +35,7 @@ class Booster (pg.sprite.Sprite):
                 pass
 
             elif self.type == BoosterType.DECREASE_TIMER: #the time of the lap is decreased
-                pass
+                stopwatch.decrease_timer(1000)
 
             elif self.type == BoosterType.FREEZE:
                 car.speed = 0
@@ -44,4 +47,5 @@ class Booster (pg.sprite.Sprite):
             
             #we can use dt
             #we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
+            # -maybe maybe
 
