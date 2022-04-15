@@ -63,51 +63,67 @@ class Leaderboard:
 		self.width = 1080
 		self.height = 720
 		self.screen = pg.display.set_mode((self.width, self.height))
-		self.car = "car 1" #temp name
-		self.map = "map 1" #temp name
-		self.cars_options = OptionBox( 40, 40, 160, 40, (150, 150, 150), (100, 200, 255), pg.font.SysFont('Corbel', 35), 
+		self.car = 0
+		self.map = 0
+		self.cars_options = OptionBox( 680, 40, 160, 40, (150, 150, 150), (100, 200, 255), pg.font.SysFont('Corbel', 35), 
 								["car 1", "car 2", "car 3"])
-		self.maps_options = OptionBox( 40, 40, 160, 40, (150, 150, 150), (100, 200, 255), pg.font.SysFont('Corbel', 35), 
+		self.maps_options = OptionBox( 880, 40, 160, 40, (150, 150, 150), (100, 200, 255), pg.font.SysFont('Corbel', 35), 
 								["map 1", "map 2", "map 3"])
 		pg.display.update()
 		pg.display.set_caption("QUICK RACING")
 		
 	def run(self):
 		records = self.get_leaderboard()
+		quit_color = (100,100,100)
 		run = True
 		while run:
+			pg.draw.rect(self.screen, quit_color, [self.width - 400, self.height - 120, 360, 80])
+			if self.pointing():
+				quit_color = (170,170,170)
+			else:
+				quit_color = (100,100,100)
+			self.cars_options.draw(self.screen)
+			self.maps_options.draw(self.screen)
 			for event in pg.event.get():
-				selected_option = self.cars_options.update(event)
-				if selected_option >= 0:
-					print(selected_option)
+				if event.type == pg.MOUSEBUTTONDOWN:
+					self.screen.fill((0,0,0))
+					run = False
+				car_selected_option = self.cars_options.update(event)
+				if car_selected_option >= 0:
+					self.car = car_selected_option				
+					records = self.get_leaderboard()
+				map_selected_option = self.maps_options.update(event)
+				if map_selected_option >= 0:
+					self.map = map_selected_option
+					records = self.get_leaderboard()
 				if event.type == pg.QUIT:
 					run = False
-			self.cars_options.draw(self.screen)
-   			self.maps_options.draw(self.screen)
 			pg.display.update()
 	
 	def pointing(self):
-		pos = None
 		mouse = pg.mouse.get_pos()
-		if abs(mouse[0] - self.width/2) <= 180:
-			if self.height/2 - 175 <= mouse[1] <= self.height/2 - 95: #play button
-				pos = 0
-			elif self.height/2 - 85 <= mouse[1] <= self.height/2 - 5: #leaderboard button
-				pos = 1
-			elif self.height/2 + 5 <= mouse[1] <= self.height/2 + 85: #settings button
-				pos = 2
-			elif self.height/2 + 95 <= mouse[1] <= self.height/2 + 175: #quit button
-				pos = 3
-		return pos
+		return (self.width - 400 <= mouse[0] <= self.width - 40) and (self.height - 120 <= mouse[1] <= self.height - 40)
 
 	def get_leaderboard(self):
 		records = []
 		with open("./data/records.csv", "r") as f:
 			reader = csv.reader(f)
 			for row in reader:
-				if row[0] == self.car and row[1] == self.map:
+				if row[0] == "car 1":
+					car = 0
+				elif row[0] == "car 2":
+					car = 1
+				else:
+					car = 2
+				if row[1] == "map 1":
+					map = 0
+				elif row[1] == "map 2":
+					map = 1
+				else:
+					map = 2
+				if car == self.car and map == self.map:
 					records.append(row.sort(key = lambda x: x[2]))
-		return records[:5]
+		return records[:min(5, len(records))]
 
 if __name__ == "__main__":
 	leaderboard = Leaderboard()
