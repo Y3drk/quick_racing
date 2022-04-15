@@ -26,15 +26,7 @@ class Menu:
         
     def run(self):
         run = True
-        while run:
-            font = pg.font.SysFont('Corbel', 35)
-            play_text = font.render('Play', False, white)
-            play_txt = play_text.get_rect()
-            play_txt.center = (540,380) #doesnt show up???
-            leaderboard_text = font.render('Leaderboard', False, white)
-            settings_text = font.render('Settings', False, white)
-            quit_text = font.render('Quit', False, white)
-            
+        while run: 
             pos = self.pointing()
             play_color, leaderboard_color, settings_color, quit_color = color_dark, color_dark, color_dark, color_dark
             if pos == 0:
@@ -69,6 +61,15 @@ class Menu:
                 
                 if event.type == pg.QUIT:
                     run = False
+                    
+            font = pg.font.SysFont('Corbel', 35)
+            play_text = font.render('Play', False, white)
+            play_txt = play_text.get_rect()
+            play_txt.center = (540,380) #doesnt show up???
+            leaderboard_text = font.render('Leaderboard', False, white)
+            settings_text = font.render('Settings', False, white)
+            quit_text = font.render('Quit', False, white)
+            
             pg.display.update()
     
     def pointing(self):

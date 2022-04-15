@@ -85,9 +85,9 @@ class Leaderboard:
 			self.cars_options.draw(self.screen)
 			self.maps_options.draw(self.screen)
 			for event in pg.event.get():
-				if event.type == pg.MOUSEBUTTONDOWN:
-					self.screen.fill((0,0,0))
+				if self.pointing() and event.type == pg.MOUSEBUTTONDOWN:
 					run = False
+					self.screen.fill((0,0,0))
 				car_selected_option = self.cars_options.update(event)
 				if car_selected_option >= 0:
 					self.car = car_selected_option				
