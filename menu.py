@@ -25,8 +25,11 @@ class Menu:
         pg.display.set_caption("QUICK RACING")
         
     def run(self):
+        background = pg.image.load("./data/background_beg.png")
+        background = pg.transform.scale(background, (self.width, self.height))
         run = True
         while run: 
+            self.screen.blit(background, (0,0))
             pos = self.pointing()
             play_color, leaderboard_color, settings_color, quit_color = color_dark, color_dark, color_dark, color_dark
             if pos == 0:
@@ -62,14 +65,16 @@ class Menu:
                 if event.type == pg.QUIT:
                     run = False
                     
-            font = pg.font.SysFont('Corbel', 35)
-            play_text = font.render('Play', False, white)
-            play_txt = play_text.get_rect()
-            play_txt.center = (540,380) #doesnt show up???
-            leaderboard_text = font.render('Leaderboard', False, white)
-            settings_text = font.render('Settings', False, white)
-            quit_text = font.render('Quit', False, white)
-            
+            #font = pg.font.SysFont('Corbel', 35)
+            #play_text, play_rect = font.render("Play", True, white)
+            #self.screen.blit(play_text, (540,380))
+            #font.render_to(self.screen, (540,500), "Play", white)
+            #play_text, rect = font.render('Play', False, white)
+            #play_text = play_text.get_rect()
+            #play_text.center = (540,380) #doesnt show up???
+            #leaderboard_text = font.render('Leaderboard', False, white)
+            #settings_text = font.render('Settings', False, white)
+            #quit_text = font.render('Quit', False, white)
             pg.display.update()
     
     def pointing(self):
