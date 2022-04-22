@@ -56,6 +56,7 @@ class Menu:
                     if pos == 1: #leaderboard button
                         print("leaderboard")
                         leaderboard = Leaderboard()
+                        run = False
                         leaderboard.run()
                     if pos == 2: #settings button
                         print("settings")

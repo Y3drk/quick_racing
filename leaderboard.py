@@ -98,7 +98,7 @@ class Leaderboard:
 					records = self.get_leaderboard()
 				if event.type == pg.QUIT:
 					run = False
-			pg.display.update()
+					pg.display.update()
 	
 	def pointing(self):
 		mouse = pg.mouse.get_pos()
