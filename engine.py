@@ -67,7 +67,9 @@ class Engine:
     #thought exactly the same thing :) -> can be done today during labs
 
     def start_timer(self):
-        return Stopwatch(self.screen, self.clock, Vector2D(800, 50))
+        stopwatch = Stopwatch(self.screen, self.clock, Vector2D(800, 50))
+        stopwatch.restart_timer(pg.time.get_ticks())
+        return stopwatch
 
     def run(self):
         wall1 = Wall(Vector2D(250, 300), 60, 60, False)
@@ -88,7 +90,6 @@ class Engine:
         map = Map(0, 1000, 300, car, None)
         map_img = pg.image.load("./data/grass.png")
         run = True
-
         stopwatch = self.start_timer()
 
         while run:

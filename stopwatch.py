@@ -22,8 +22,8 @@ class Stopwatch (pg.sprite.Sprite):
         self.font.render_to(self.screen, (self.x, self.y), out, pg.Color('black'))
         self.clock.tick(60)
 
-    def restart_timer(self):
-        self.difference = 0
+    def restart_timer(self, ticks):
+        self.difference = ticks
         pass
 
     def stop_timer(self):
