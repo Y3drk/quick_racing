@@ -52,16 +52,18 @@ class Car(pg.sprite.Sprite):
     def rotate_left(self, dt):
         if self.speed != 0:
             self.direction -= 3 * self.speed * self.rotation/(dt**2)
-            self.image = pg.transform.rotate(self.__image, self.direction)
             if self.direction < 0:
                 self.direction += 360
+            print(self.direction)
+            self.image = pg.transform.rotate(self.__image, 360-self.direction)
 
     def rotate_right(self, dt):
         if self.speed != 0:
             self.direction += 3 * self.speed * self.rotation/(dt**2)
-            self.image = pg.transform.rotate(self.__image, self.direction)
             if self.direction > 360:
                 self.direction -= 360
+            print(self.direction)
+            self.image = pg.transform.rotate(self.__image, 360-self.direction)
 
     def accelerate(self, dt):
         self.speed += self.engine/dt
