@@ -58,6 +58,7 @@ class Menu:
                         leaderboard = Leaderboard()
                         run = False
                         leaderboard.run()
+                        run = True
                     if pos == 2: #settings button
                         print("settings")
                     if pos == 3: #quit button
