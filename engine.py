@@ -85,7 +85,7 @@ class Engine:
 
         traction = 0.15
 
-        car = Car(0, Vector2D(10, 10), 0, 0, 60, 30)
+        car = Car(0, Vector2D(10, 10), 0, 0, 10, 200)
         # car_img = pg.image.load("./data/car.png") #done temporarily inside the car class
         map = Map(0, 1000, 300, car, None)
         map_img = pg.image.load("./data/grass.png")
