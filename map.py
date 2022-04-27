@@ -3,6 +3,7 @@ import pygame as pg
 from vector2d import Vector2D
 from car import Car
 
+
 class Map:
     def __init__(self, id, width, height, car, walls, surfaces): #surfaces
         self.id = id
@@ -11,6 +12,7 @@ class Map:
         self.car = car
         self.walls = walls
         self.surfaces = surfaces
+        self.name = "Map"
 
     def check_collision(self):
         for wall in self.walls:

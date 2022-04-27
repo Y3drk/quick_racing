@@ -11,7 +11,6 @@ class CSVParser:
         self.source_file = map_source
         self.leaderboard = leaderboard
 
-
     def draw_map(self, map: map):
         file = open(self.source_file)
         csv_reader = csv.reader(file)
@@ -64,7 +63,32 @@ class CSVParser:
 
         file.close()
 
-    def write_to_leaderboard(self):
+    def write_to_leaderboard(self,result, name, map, car):
+        #assuming the following schema of the CSV file:
+        #0 - player name
+        #1 - player result(time)
+        #2 - map
+        #3 - car model
+
         file = open(self.leaderboard)
         csv_writer = csv.writer(file)
+        new_row = [name, result, map.name, car.name]
+        csv_writer.writerow(new_row)
+
         file.close()
+
+    def read_leaderboard(self):
+        file = open(self.leaderboard)
+        csv_reader = csv.reader(file)
+        header = next(csv_reader)
+
+        rows = []
+
+        for row in csv_reader:
+            row.append(row)
+
+        #now we can do what we want with the rows - it's up to us what
+
+
+        file.close()
+        pass

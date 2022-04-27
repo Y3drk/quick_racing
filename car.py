@@ -20,6 +20,7 @@ class Car(pg.sprite.Sprite):
         self.direction = direction
         self.rotation = rotation
         self.engine = engine
+        self.name = "Car"
 
     def update(self, dt):
         pressed = pg.key.get_pressed()

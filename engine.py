@@ -52,7 +52,7 @@ class Engine:
     def __init__(self, refresh_rate):
         self.refresh = refresh_rate
         pg.init()
-        self.screen = pg.display.set_mode((1000, 700))
+        self.screen = pg.display.set_mode()
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
@@ -87,7 +87,8 @@ class Engine:
 
         car = Car(0, Vector2D(10, 10), 0, 0, 10, 200)
         # car_img = pg.image.load("./data/car.png") #done temporarily inside the car class
-        map = Map(0, 1000, 300, car, None)
+        x, y = self.screen.get_size()
+        curr_map = Map(0, x, y, car, None, None)
         map_img = pg.image.load("./data/grass.png")
         run = True
         stopwatch = self.start_timer()

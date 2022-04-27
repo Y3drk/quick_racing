@@ -5,6 +5,7 @@ white = (255,255,255)
 color_light = (170,170,170)
 color_dark = (100,100,100)
 
+
 class OptionBox():
 	def __init__(self, x, y, w, h, color, highlight_color, font, option_list, selected = 0):
 		self.color = color
@@ -56,6 +57,7 @@ class OptionBox():
 				self.draw_menu = False
 				return self.active_option
 		return -1
+
 
 class Leaderboard:
 	def __init__(self):
