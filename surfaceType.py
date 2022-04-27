@@ -10,3 +10,4 @@ class SurfaceType(Enum):
     GRAVEL = (0.4, (204, 102, 0))
     GRASS = (0.5, (0, 204, 0))
     SAND = (0.25, (255, 255, 0))
+    FINISHLINE = (0.9, "finish_line.png") #special case where there will be an image

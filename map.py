@@ -4,13 +4,13 @@ from vector2d import Vector2D
 from car import Car
 
 class Map:
-    def __init__(self, id, width, height, car, walls): #surfaces
+    def __init__(self, id, width, height, car, walls, surfaces): #surfaces
         self.id = id
         self.width = width
         self.height = height
         self.car = car
         self.walls = walls
-        #self.surfaces = surfaces
+        self.surfaces = surfaces
 
     def check_collision(self):
         for wall in self.walls:
