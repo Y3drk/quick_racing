@@ -29,7 +29,7 @@ def new_collision_place(x,y, wall: Wall, car : Car):
         if best[0] > dist[0]:
             best = dist
 
-    print(best)
+    #print(best)
 
     if best[1] == "distance_right_wall":  # OK
         #car.position.set_x(wall.rect.right)
@@ -99,7 +99,7 @@ class Engine:
             self.all_surfaces.draw(self.screen)
             self.all_surfaces.update()
 
-            self.screen.blit(car.image, (car.position.x, car.position.y))
+            #self.screen.blit(car.image, (car.position.x, car.position.y))
             #self.all_cars.draw(self.screen)
             #added
 
@@ -108,6 +108,8 @@ class Engine:
 
             car.update(dt)
             car.move(dt) # maybe car also should be coded as a sprite???
+
+            self.screen.blit(car.image, (car.position.x, car.position.y))
 
             collisions = pg.sprite.spritecollide(car, self.all_walls, False)
             if collisions: # it's a list of objects/sprites that collided with the car

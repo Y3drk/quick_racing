@@ -4,11 +4,11 @@ from math import sin, cos, radians
 
 WHITE = (255, 255, 255)
 
+
 class Car(pg.sprite.Sprite):
     def __init__(self, id, position, speed, direction, rotation, engine):
         pg.sprite.Sprite.__init__(self)
-        self.__image = pg.image.load("./data/supra_new.png").convert_alpha()
-        self.image = self.__image.copy()
+        self.image = pg.image.load("./data/supra.png").convert()
         #self.image.fill((0, 0, 0))
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
@@ -34,10 +34,9 @@ class Car(pg.sprite.Sprite):
 
     def move(self, dt):
         if self.speed > 0:
-            print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= self.speed * (0.1 + self.speed * 0.01) #v drogi i v*v powietrza
+            self.speed -= self.speed * (0.03 + self.speed * 0.1) #v drogi i v*v powietrza
         elif self.speed < 0:
-            self.speed += self.speed * (0.03 + self.speed * 0.05) #v drogi i v*v powietrza
+            self.speed += self.speed * (0.03 + self.speed * 0.1) #v drogi i v*v powietrza
         self.position.add(self.speed*cos(radians(self.direction)), self.speed*sin(radians(self.direction)))
         self.rect.x = self.position.x
         self.rect.y = self.position.y
@@ -52,16 +51,16 @@ class Car(pg.sprite.Sprite):
     def rotate_left(self, dt):
         if self.speed != 0:
             self.direction -= 3 * self.speed * self.rotation/(dt**2)
+            #self.image = pg.transform.rotate(self.image, 3 * self.speed * self.rotation/(dt**2)) doesn't work as expected
             if self.direction < 0:
                 self.direction += 360
-            self.image = pg.transform.rotate(self.__image, 360-self.direction)
 
     def rotate_right(self, dt):
         if self.speed != 0:
             self.direction += 3 * self.speed * self.rotation/(dt**2)
+            #self.image = pg.transform.rotate(self.image, 3 * self.speed * self.rotation / (dt ** 2)) as above
             if self.direction > 360:
                 self.direction -= 360
-            self.image = pg.transform.rotate(self.__image, 360-self.direction)
 
     def accelerate(self, dt):
         self.speed += self.engine/dt
