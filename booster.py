@@ -9,7 +9,7 @@ from stopwatch import Stopwatch
 class Booster (pg.sprite.Sprite):
     def __init__(self, position: Vector2D, change: int, image_name, type: BoosterType, dt): #change -> wartośc zmiany, jesli dotyczy zmian boolowskich to ==1
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load("./data/"+image_name+".png").convert() # make booster images
+        self.image = pg.image.load("./data/quick_racing_booster_"+image_name+".png").convert() # make booster images
         self.rect = self.image.get_rect()
         self.rect.x = position.x
         self.rect.y = position.y
@@ -48,4 +48,7 @@ class Booster (pg.sprite.Sprite):
             #we can use dt
             #we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
             # -maybe maybe
+
+    def spawn_booster(self, curr_map: map):
+        pass
 

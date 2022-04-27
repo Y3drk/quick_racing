@@ -7,6 +7,8 @@ from wall import Wall
 from surface import Surface
 from surfaceType import SurfaceType
 from stopwatch import Stopwatch
+from booster import Booster
+from boosterType import BoosterType
 
 
 def new_collision_place(x,y, wall: Wall, car : Car):
@@ -56,8 +58,13 @@ class Engine:
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
+
+        #move to map
         self.all_walls = pg.sprite.Group()
         self.all_surfaces = pg.sprite.Group()
+
+        #it would be nice if booster stayed here
+        self.all_boosters = pg.sprite.Group()
 
     # btw that's how we can load the map -> read all walls size and location from CSV then create
     # them and add them all to sprite group,
@@ -81,6 +88,10 @@ class Engine:
         self.all_surfaces.add(surface1)
         surface2 = Surface(Vector2D(400, 200), 100, 80, SurfaceType.ICE)
         self.all_surfaces.add(surface2)
+
+        #temporarily for boosters
+        booster1 = Booster(Vector2D(700, 700), 30, "dt",BoosterType.SPEED, self.clock.tick(self.refresh))
+        self.all_boosters.add(booster1)
 
 
         traction = 0.15
@@ -123,6 +134,13 @@ class Engine:
                 #print("surface here")
                 for slide in slides:
                     traction = slide.adjust_fraction()
+
+            #collisions with boosters
+            pick_ups = pg.sprite.spritecollide(car, self.all_boosters, False) #maybe in this case it can be set to true
+            if pick_ups:
+                for boost in pick_ups:
+                    pass #activate booster!
+
 
             #print(traction) no we have to include different surfaces in the movement of the car
 
