@@ -9,45 +9,7 @@ from surfaceType import SurfaceType
 from stopwatch import Stopwatch
 from booster import Booster
 from boosterType import BoosterType
-
-
-def new_collision_place(x,y, wall: Wall, car : Car):
-    options = []
-
-    distance_right_wall = abs(x - wall.rect.right)
-    options.append((distance_right_wall, "distance_right_wall"))
-
-    distance_left_wall = abs(x - wall.rect.left)
-    options.append((distance_left_wall, "distance_left_wall"))
-
-    distance_bottom_wall = abs(y - wall.rect.bottom)
-    options.append((distance_bottom_wall, "distance_bottom_wall"))
-
-    distance_top_wall = abs(y - wall.rect.top)
-    options.append((distance_top_wall, "distance_top_wall"))
-
-    best = (float('inf'), None)
-    for dist in options:
-        if best[0] > dist[0]:
-            best = dist
-
-    #print(best)
-
-    if best[1] == "distance_right_wall":  # OK
-        #car.position.set_x(wall.rect.right)
-        return Vector2D(wall.rect.right, y)
-
-    elif best[1] == "distance_left_wall":
-        #car.position.set_x(wall.rect.left)
-        return Vector2D(wall.rect.left - car.rect.w, y)
-
-    elif best[1] == "distance_bottom_wall": # OK
-        #car.position.set_y(wall.rect.bottom)
-        return Vector2D(x, wall.rect.bottom)
-
-    else:
-        #car.position.set_y(wall.rect.top)
-        return Vector2D(x, wall.rect.top - car.rect.h)
+from math import sin, cos, radians
 
 
 class Engine:
@@ -60,8 +22,8 @@ class Engine:
         self.clock = pg.time.Clock()
 
         #move to map
-        self.all_walls = pg.sprite.Group()
-        self.all_surfaces = pg.sprite.Group()
+        # self.all_walls = pg.sprite.Group()
+        # self.all_surfaces = pg.sprite.Group()
 
         #it would be nice if booster stayed here
         self.all_boosters = pg.sprite.Group()
@@ -79,28 +41,22 @@ class Engine:
         return stopwatch
 
     def run(self):
-        wall1 = Wall(Vector2D(250, 300), 60, 60, False)
-        self.all_walls.add(wall1) # beginning of sprites
-        wall2 = Wall(Vector2D(20, 150), 60, 20, True)
-        self.all_walls.add(wall2)  # beginning of sprites
-
-        surface1 = Surface(Vector2D(150, 20), 100, 50, SurfaceType.ASPHALT)
-        self.all_surfaces.add(surface1)
-        surface2 = Surface(Vector2D(400, 200), 100, 80, SurfaceType.ICE)
-        self.all_surfaces.add(surface2)
-
         #temporarily for boosters
-        booster1 = Booster(Vector2D(700, 700), 30, "dt",BoosterType.SPEED, self.clock.tick(self.refresh))
-        self.all_boosters.add(booster1)
-
+        # booster1 = Booster(Vector2D(700, 700), 30, "dt",BoosterType.SPEED, self.clock.tick(self.refresh))
+        # self.all_boosters.add(booster1)
 
         traction = 0.15
 
-        car = Car(0, Vector2D(10, 10), 0, 0, 10, 200)
         # car_img = pg.image.load("./data/car.png") #done temporarily inside the car class
+
         x, y = self.screen.get_size()
-        curr_map = Map(0, x, y, car, None, None)
+
+        curr_map = Map(0, x, y)
         map_img = pg.image.load("./data/grass.png")
+        curr_map.place_objects()
+
+        car = Car(0, Vector2D(10, 10), 0, 0, 10, 50, curr_map)
+
         run = True
         stopwatch = self.start_timer()
 
@@ -108,38 +64,32 @@ class Engine:
             dt = self.clock.tick(self.refresh)
             self.screen.blit(map_img, (0, 0))
 
-            self.all_surfaces.draw(self.screen)
-            self.all_surfaces.update()
+            curr_map.all_surfaces.draw(self.screen)
+            curr_map.all_surfaces.update()
 
             #self.screen.blit(car.image, (car.position.x, car.position.y))
             #self.all_cars.draw(self.screen)
             #added
 
-            self.all_walls.draw(self.screen)
-            self.all_walls.update()
+            curr_map.all_walls.draw(self.screen)
+            curr_map.all_walls.update()
 
-            car.update(dt)
             car.move(dt) # maybe car also should be coded as a sprite???
+            car.update(dt)
 
             self.screen.blit(car.image, (car.position.x, car.position.y))
 
-            collisions = pg.sprite.spritecollide(car, self.all_walls, False)
-            if collisions: # it's a list of objects/sprites that collided with the car
-                for col in collisions:
-                    car.position = new_collision_place(car.position.x, car.position.y, col, car)
-                    car.speed = -car.speed * traction   # well the setter is needed
+            test1 = Surface(Vector2D(car.rect.x, car.rect.y), 10, 10, SurfaceType.ICE)
+            self.screen.blit(test1.image, test1.rect.center)
 
-            slides = pg.sprite.spritecollide(car, self.all_surfaces, False)
-            if slides:
-                #print("surface here")
-                for slide in slides:
-                    traction = slide.adjust_fraction()
+            test2 = Surface(Vector2D(car.rect.centerx, car.rect.centery), 10, 10, SurfaceType.GRASS)
+            self.screen.blit(test2.image, (car.rect.centerx, car.rect.centery))
 
-            #collisions with boosters
-            pick_ups = pg.sprite.spritecollide(car, self.all_boosters, False) #maybe in this case it can be set to true
-            if pick_ups:
-                for boost in pick_ups:
-                    pass #activate booster!
+            # test3 = Surface(Vector2D(car.rect.right, (car.rect.top + car.rect.bottom)/2), 10, 10, SurfaceType.SAND)
+            # self.screen.blit(test3.image, (car.rect.right, (car.rect.top + car.rect.bottom)/2))
+
+            pg.draw.rect(self.screen, (0,0,0), car, 3)
+
 
 
             #print(traction) no we have to include different surfaces in the movement of the car

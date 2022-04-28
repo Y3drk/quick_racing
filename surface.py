@@ -11,8 +11,8 @@ class Surface(pg.sprite.Sprite):
         self.image.fill(fraction.value[1]) # for now it's all white but we should figure out how to colour it differently
         # self.image.set_colorkey((0, 0, 0)) #this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
-        self.rect.x = position.x
-        self.rect.y = position.y
+        self.rect.centerx = position.x
+        self.rect.centery = position.y
         self.width = width
         self.height = height
         self.fraction = fraction.value[0]
