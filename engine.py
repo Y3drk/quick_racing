@@ -79,16 +79,7 @@ class Engine:
 
             self.screen.blit(car.image, (car.position.x, car.position.y))
 
-            test1 = Surface(Vector2D(car.rect.x, car.rect.y), 10, 10, SurfaceType.ICE)
-            self.screen.blit(test1.image, test1.rect.center)
-
-            test2 = Surface(Vector2D(car.rect.centerx, car.rect.centery), 10, 10, SurfaceType.GRASS)
-            self.screen.blit(test2.image, (car.rect.centerx, car.rect.centery))
-
-            # test3 = Surface(Vector2D(car.rect.right, (car.rect.top + car.rect.bottom)/2), 10, 10, SurfaceType.SAND)
-            # self.screen.blit(test3.image, (car.rect.right, (car.rect.top + car.rect.bottom)/2))
-
-            pg.draw.rect(self.screen, (0,0,0), car, 3)
+            #pg.draw.rect(self.screen, (0,0,0), car, 3)
 
 
 

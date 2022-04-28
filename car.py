@@ -25,17 +25,22 @@ class Car(pg.sprite.Sprite):
         self.engine = engine
         self.map = curr_map
 
+        self.mask = pg.mask.from_surface(self.image)
+
     def update(self, dt):
         collision_test_result = self.map.handle_collision_with_walls(self, 0)
 
-        if not collision_test_result[0]:
+        if not collision_test_result:
             self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
         else:
+            #self.position = collision_test_result[1]
+            self.position.subtract(10 * cos(radians(self.direction)), 10 * sin(radians(self.direction)))
             self.speed = -self.speed * 0.3
-            self.position = collision_test_result[1]
 
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.position.x, self.position.y
+
+        self.mask = pg.mask.from_surface(self.image)
         # self.rect.centerx = self.position.x
         # self.rect.centery = self.position.y
 
@@ -71,6 +76,8 @@ class Car(pg.sprite.Sprite):
             self.image = pg.transform.rotate(self.__image, 360 - self.direction)
             self.rect = self.image.get_rect()
             self.rect.x, self.rect.y = self.position.x, self.position.y
+
+            self.mask = pg.mask.from_surface(self.image)
             # self.rect.centerx = self.position.x
             # self.rect.centery = self.position.y
             # self.rect.x = self.position.x
@@ -85,6 +92,8 @@ class Car(pg.sprite.Sprite):
             self.image = pg.transform.rotate(self.__image, 360 - self.direction)
             self.rect = self.image.get_rect()
             self.rect.x, self.rect.y = self.position.x, self.position.y
+
+            self.mask = pg.mask.from_surface(self.image)
             # self.rect.centery = self.position.y
             # self.rect.x = self.position.x
             # self.rect.y = self.position.y

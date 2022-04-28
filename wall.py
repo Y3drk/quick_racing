@@ -21,6 +21,7 @@ class Wall(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = position.x
         self.rect.y = position.y
+        self.mask = pg.mask.from_surface(self.image)
 
         if with_tires:
             self.width = position.x - self.rect.right

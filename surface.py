@@ -17,5 +17,7 @@ class Surface(pg.sprite.Sprite):
         self.height = height
         self.fraction = fraction.value[0]
 
+        self.mask = pg.mask.from_surface(self.image)
+
     def adjust_fraction(self):
         return self.fraction

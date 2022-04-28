@@ -21,6 +21,7 @@ class Booster (pg.sprite.Sprite):
         self.dt = dt #refresh rate -> to use in car
 
         self.position = position
+        self.mask = pg.mask.from_surface(self.image)
 
     def activate(self, car: Car, stopwatch: Stopwatch):
             if self.type == BoosterType.SPEED:
@@ -49,6 +50,4 @@ class Booster (pg.sprite.Sprite):
             #we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
             # -maybe maybe
 
-    def spawn_booster(self, curr_map: map):
-        pass
 
