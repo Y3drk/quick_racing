@@ -19,7 +19,7 @@ class CSVParser:
         rows = []
 
         for row in csv_reader:
-            row.append(row)
+            rows.append(row)
 
         #planned CSV structure ->
         #0 type(string -> what is it, wall / surface),
@@ -28,38 +28,43 @@ class CSVParser:
         #3 width,
         #4 height,
         #5 surfaceType or with_tires to specify
+        #6 rotation -> if it has image, how much is it rotated
         for row in rows:
-            position = Vector2D(row[1], row[2])
-            width = row[3]
-            height = row[4]
+            position = Vector2D(int(row[1]), int(row[2]))
+            width = int(row[3])
+            height = int(row[4])
+            rotation = int(row[6])
 
             if row[0] == "WALL":
-                if row[5] == "with_tires":
-                    map.walls.append(Wall(position, width, height, True))
+                if row[5] == "WITH_TIRES":
+                    map.all_walls.add(Wall(position, width, height, True, rotation))
                 else:
-                    map.walls.append(Wall(position, width, height, False))
+                    map.all_walls.add(Wall(position, width, height, False, rotation))
 
             elif row[0] == "SURFACE":
                 if row[5] == "ASPHALT":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.ASPHALT))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.ASPHALT, rotation))
 
                 elif row[5] == "SNOW":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.SNOW))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.SNOW, rotation))
 
                 elif row[5] == "ICE":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.ICE))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.ICE, rotation))
 
                 elif row[5] == "GRAVEL":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.GRAVEL))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.GRAVEL, rotation))
 
                 elif row[5] == "SAND":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.SAND))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.SAND, rotation))
 
                 elif row[5] == "GRASS":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.GRASS))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.GRASS, rotation))
 
                 elif row[5] == "FINISHLINE":
-                    map.sufraces.append(Surface(position, width, height, SurfaceType.FINISHLINE))
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.FINISHLINE, rotation))
+
+                elif row[5] == "SIDE":
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.SIDE, rotation))
 
         file.close()
 

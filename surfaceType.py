@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class SurfaceType(Enum):
     #in car.move there is friction hardcoded so it will be easy to add these values
     #but we can also consider adding air friction - wind (given we have enough time)
@@ -10,4 +11,5 @@ class SurfaceType(Enum):
     GRAVEL = (0.4, (204, 102, 0))
     GRASS = (0.5, (0, 204, 0))
     SAND = (0.25, (255, 255, 0))
-    FINISHLINE = (0.9, "finish_line.png") #special case where there will be an image
+    FINISHLINE = (0.9, "./data/finish_line.png") #special case where there will be an image
+    SIDE = (0.9, "./data/side.png")

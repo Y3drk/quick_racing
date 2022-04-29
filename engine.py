@@ -16,7 +16,7 @@ class Engine:
     def __init__(self, refresh_rate):
         self.refresh = refresh_rate
         pg.init()
-        self.screen = pg.display.set_mode()
+        self.screen = pg.display.set_mode((1480,780))
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
@@ -36,7 +36,7 @@ class Engine:
     #thought exactly the same thing :) -> can be done today during labs
 
     def start_timer(self):
-        stopwatch = Stopwatch(self.screen, self.clock, Vector2D(800, 50))
+        stopwatch = Stopwatch(self.screen, self.clock, Vector2D(1300, 40))
         stopwatch.restart_timer(pg.time.get_ticks())
         return stopwatch
 
@@ -55,7 +55,7 @@ class Engine:
         map_img = pg.image.load("./data/grass.png")
         curr_map.place_objects()
 
-        car = Car(0, Vector2D(10, 10), 0, 0, 10, 50, curr_map)
+        car = Car(0, Vector2D(50, 100), 0, 0, 10, 50, curr_map)
 
         run = True
         stopwatch = self.start_timer()

@@ -5,14 +5,20 @@ from surfaceType import SurfaceType
 
 
 class Surface(pg.sprite.Sprite):
-    def __init__(self, position: Vector2D, width: int, height: int, fraction: SurfaceType):
+    def __init__(self, position: Vector2D, width: int, height: int, fraction: SurfaceType, rotation):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((width, height))
-        self.image.fill(fraction.value[1]) # for now it's all white but we should figure out how to colour it differently
-        # self.image.set_colorkey((0, 0, 0)) #this will make the img ignore all the white pixels
+
+        if type(fraction.value[1]) == tuple:
+            self.image = pg.Surface((width, height))
+            self.image.fill(fraction.value[1])
+
+        else:
+            self.image = pg.image.load(fraction.value[1]).convert_alpha()
+            self.image = pg.transform.rotate(self.image, rotation)
+
         self.rect = self.image.get_rect()
-        self.rect.centerx = position.x
-        self.rect.centery = position.y
+        self.rect.x = position.x
+        self.rect.y = position.y
         self.width = width
         self.height = height
         self.fraction = fraction.value[0]

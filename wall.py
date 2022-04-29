@@ -4,13 +4,14 @@ from math import sqrt, acos
 
 
 class Wall(pg.sprite.Sprite):
-    def __init__(self, position: Vector2D, width: int, height: int, with_tires: bool):
+    def __init__(self, position: Vector2D, width: int, height: int, with_tires: bool, rotation):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((width, height))
 
         if with_tires:
             self.image = pg.image.load("./data/tirewall.png").convert()
             self.image.set_colorkey((0, 0, 0))
+            self.image = pg.transform.rotate(self.image, rotation)
 
         else:
             self.image.fill((192, 192, 192))

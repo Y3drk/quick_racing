@@ -1,5 +1,4 @@
 import pygame as pg
-from vector2d import Vector2D
 from map import Map
 from math import sin, cos, radians
 
@@ -28,21 +27,23 @@ class Car(pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
 
     def update(self, dt):
-        collision_test_result = self.map.handle_collision_with_walls(self, 0)
+        collision_test_result = self.map.handle_collision_with_walls(self)
 
         if not collision_test_result:
             self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
         else:
-            #self.position = collision_test_result[1]
-            self.position.subtract(10 * cos(radians(self.direction)), 10 * sin(radians(self.direction)))
-            self.speed = -self.speed * 0.3
+            if self.speed > 0 :
+                self.position.subtract(8 * cos(radians(self.direction)), 8 * sin(radians(self.direction)))
+            else:
+                self.position.add(6 * cos(radians(self.direction)), 6 * sin(radians(self.direction)))
+
+            self.speed = -self.speed * 0.15
 
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.position.x, self.position.y
 
         self.mask = pg.mask.from_surface(self.image)
-        # self.rect.centerx = self.position.x
-        # self.rect.centery = self.position.y
+
 
     def move(self, dt):
 
@@ -68,7 +69,7 @@ class Car(pg.sprite.Sprite):
 
     def rotate_left(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction - 4 * self.speed * self.rotation / (dt ** 2)) % 360
+            self.direction = (self.direction - 6 * self.speed * self.rotation / (dt ** 2)) % 360
 
             if self.direction < 0:
                 self.direction += 360
@@ -76,16 +77,11 @@ class Car(pg.sprite.Sprite):
             self.image = pg.transform.rotate(self.__image, 360 - self.direction)
             self.rect = self.image.get_rect()
             self.rect.x, self.rect.y = self.position.x, self.position.y
-
             self.mask = pg.mask.from_surface(self.image)
-            # self.rect.centerx = self.position.x
-            # self.rect.centery = self.position.y
-            # self.rect.x = self.position.x
-            # self.rect.y = self.position.y
 
     def rotate_right(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction + 4 * self.speed * self.rotation / (dt ** 2)) % 360
+            self.direction = (self.direction + 6 * self.speed * self.rotation / (dt ** 2)) % 360
             if self.direction > 360:
                 self.direction -= 360
 
@@ -94,9 +90,6 @@ class Car(pg.sprite.Sprite):
             self.rect.x, self.rect.y = self.position.x, self.position.y
 
             self.mask = pg.mask.from_surface(self.image)
-            # self.rect.centery = self.position.y
-            # self.rect.x = self.position.x
-            # self.rect.y = self.position.y
 
     def accelerate(self, dt):
         self.speed += self.engine / dt

@@ -1,5 +1,7 @@
 from __future__ import annotations 
 import pygame as pg
+
+from CSVParser import CSVParser
 from vector2d import Vector2D
 from wall import Wall
 from surface import Surface
@@ -19,18 +21,26 @@ class Map:
         self.name = "Map"
 
     def place_objects(self):
-        wall1 = Wall(Vector2D(250, 300), 60, 60, False)
-        self.all_walls.add(wall1) # beginning of sprites
-        wall2 = Wall(Vector2D(20, 150), 60, 20, True)
-        self.all_walls.add(wall2)  # beginning of sprites
+        parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv")
 
-        surface1 = Surface(Vector2D(150, 20), 100, 50, SurfaceType.ASPHALT)
-        self.all_surfaces.add(surface1)
-        surface2 = Surface(Vector2D(400, 200), 100, 80, SurfaceType.ICE)
-        self.all_surfaces.add(surface2)
+        parser.draw_map(self)
 
-        test1 = Surface(Vector2D(wall1.rect.x, wall1.rect.y), 10, 10, SurfaceType.ICE)
-        self.all_surfaces.add(test1)
+        # surface1 = Surface(Vector2D(100, 100), 1500, 110, SurfaceType.ASPHALT)
+        # self.all_surfaces.add(surface1)
+
+
+        # wall1 = Wall(Vector2D(250, 300), 60, 60, False)
+        # self.all_walls.add(wall1) # beginning of sprites
+        # wall2 = Wall(Vector2D(20, 150), 60, 20, True)
+        # self.all_walls.add(wall2)  # beginning of sprites
+        #
+        # surface1 = Surface(Vector2D(150, 20), 100, 50, SurfaceType.ASPHALT)
+        # self.all_surfaces.add(surface1)
+        # surface2 = Surface(Vector2D(400, 200), 100, 80, SurfaceType.ICE)
+        # self.all_surfaces.add(surface2)
+        #
+        # test1 = Surface(Vector2D(wall1.rect.x, wall1.rect.y), 10, 10, SurfaceType.ICE)
+        # self.all_surfaces.add(test1)
 
     # @staticmethod
     # def new_collision_place(x, y, wall: Wall, car):
@@ -116,41 +126,27 @@ class Map:
     #
     #     return Vector2D(best_x, best_y),best_spot
 
-    def handle_collision_with_walls(self, car, traction: float):
+    def handle_collision_with_walls(self, car):
         collisions = pg.sprite.spritecollide(car, self.all_walls, False, pg.sprite.collide_mask)
         if collisions:  # it's a list of objects/sprites that collided with the car
-            print("collision with wall\n")
+            print("Collision with wall")
             for col in collisions:
                 return True
 
         return False
 
     def handle_collision_with_sufraces(self, car, traction: float):
-        slides = pg.sprite.spritecollide(car, self.all_surfaces, False)
+        slides = pg.sprite.spritecollide(car, self.all_surfaces, False, pg.sprite.collide_mask)
         if slides:
-            # print("surface here")
             for slide in slides:
                 if slide.rect.x == car.rect.x + car.speed * cos(
                         radians(car.direction)) and slide.rect.y == car.rect.y + car.speed * sin(
                         radians(car.direction)):
-                    traction = slide.adjust_fraction()
+                    traction = slide.adjust_fraction() #do sth about it later on!
 
     def handle_collision_with_boosters(self, car):
         # collisions with boosters
-        pick_ups = pg.sprite.spritecollide(car, self.all_boosters, False)  # maybe in this case it can be set to true
+        pick_ups = pg.sprite.spritecollide(car, self.all_boosters, False, pg.sprite.collide_mask)  # maybe in this case it can be set to true
         if pick_ups:
             for boost in pick_ups:
                 pass  # activate booster!
-    # def check_collision(self):
-    #     for wall in self.walls:
-    #         if pg.sprite.collide_rect(self.car, wall):
-    #             self.car.collision(wall)
-    #
-    # def collision_test(self):
-    #     collisions = []
-    #     c = self.car
-    #     for wall in self.walls:
-    #         if pg.c.collide_rect(wall):
-    #             collisions.append(wall)
-    #     for collision in collisions:
-    #         self.car.collide()
