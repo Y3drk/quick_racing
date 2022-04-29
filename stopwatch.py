@@ -15,6 +15,7 @@ class Stopwatch (pg.sprite.Sprite):
         self.difference = 0
 
     def display_timer(self, ticks):
+        print("ticks: ", ticks, ", diff: ", self.difference, "t-d: ", ticks - self.difference)
         millis = (ticks - self.difference) % 1000
         seconds = int((ticks - self.difference) / 1000 % 60)
         minutes = int((ticks - self.difference) / 60000 % 24)
@@ -30,4 +31,4 @@ class Stopwatch (pg.sprite.Sprite):
         pass
 
     def decrease_timer(self, value: int):
-        self.difference = value
+        self.difference += value

@@ -39,6 +39,9 @@ class Car(pg.sprite.Sprite):
 
             self.speed = -self.speed * 0.15
 
+        new_traction = self.map.handle_collision_with_sufraces(self)
+        self.map.handle_collision_with_boosters(self)
+
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.position.x, self.position.y
 

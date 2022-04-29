@@ -44,6 +44,7 @@ class CSVParser:
             elif row[0] == "SURFACE":
                 if row[5] == "ASPHALT":
                     map.all_surfaces.add(Surface(position, width, height, SurfaceType.ASPHALT, rotation))
+                    map.places_for_boosters.append([position.x + 40, position.y + 40, position.x + width - 40, position.y + height - 40])
 
                 elif row[5] == "SNOW":
                     map.all_surfaces.add(Surface(position, width, height, SurfaceType.SNOW, rotation))

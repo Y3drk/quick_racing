@@ -1,11 +1,14 @@
 from __future__ import annotations
+
+import asyncio
+import random
+
 import pygame as pg
+
+import boosterType
 from vector2d import Vector2D
 from car import Car
 from map import Map
-from wall import Wall
-from surface import Surface
-from surfaceType import SurfaceType
 from stopwatch import Stopwatch
 from booster import Booster
 from boosterType import BoosterType
@@ -21,12 +24,6 @@ class Engine:
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
 
-        #move to map
-        # self.all_walls = pg.sprite.Group()
-        # self.all_surfaces = pg.sprite.Group()
-
-        #it would be nice if booster stayed here
-        self.all_boosters = pg.sprite.Group()
 
     # btw that's how we can load the map -> read all walls size and location from CSV then create
     # them and add them all to sprite group,
@@ -34,6 +31,51 @@ class Engine:
     # also I think it would be beneficial if all_walls were an attribute of the map
     
     #thought exactly the same thing :) -> can be done today during labs
+
+    def spawn_booster(self, map: Map, dt):
+
+        if random.randrange(0, 256) != 8:
+            return
+
+        place = random.randrange(0, len(map.places_for_boosters)-1)
+        x_coordinate = random.randrange(map.places_for_boosters[place][0], map.places_for_boosters[place][2])
+        y_coordinate = random.randrange(map.places_for_boosters[place][1], map.places_for_boosters[place][3])
+
+
+        what_booster = random.randrange(0,5)
+        new_booster_type = None
+        change = None
+
+        #temp
+        what_booster = 3
+
+        if what_booster == 0:
+            new_booster_type = BoosterType.SPEED
+            change = random.randrange(-100, 100)
+
+        elif what_booster == 1:
+            new_booster_type = BoosterType.TURNING
+            change = random.randrange(-3 , 3)
+
+        elif what_booster == 2:
+            new_booster_type = BoosterType.NO_COLLISIONS
+            change = 1
+
+        elif what_booster == 3:
+            new_booster_type = BoosterType.DECREASE_TIMER
+            change = 1
+
+        elif what_booster == 4:
+            new_booster_type = BoosterType.NO_TURNING
+            change = 1
+
+        elif what_booster == 5:
+            new_booster_type = BoosterType.FREEZE
+            change = 1
+
+        map.all_boosters.add(Booster(Vector2D(x_coordinate, y_coordinate), change, new_booster_type, dt))
+        #print("Booster spawned!\n")
+
 
     def start_timer(self):
         stopwatch = Stopwatch(self.screen, self.clock, Vector2D(1300, 40))
@@ -51,14 +93,14 @@ class Engine:
 
         x, y = self.screen.get_size()
 
-        curr_map = Map(0, x, y)
+        run = True
+        stopwatch = self.start_timer()
+
+        curr_map = Map(0, x, y, stopwatch)
         map_img = pg.image.load("./data/grass.png")
         curr_map.place_objects()
 
         car = Car(0, Vector2D(50, 100), 0, 0, 10, 50, curr_map)
-
-        run = True
-        stopwatch = self.start_timer()
 
         while run:
             dt = self.clock.tick(self.refresh)
@@ -73,6 +115,11 @@ class Engine:
 
             curr_map.all_walls.draw(self.screen)
             curr_map.all_walls.update()
+
+            self.spawn_booster(curr_map, dt)
+
+            curr_map.all_boosters.draw(self.screen)
+            curr_map.all_boosters.update()
 
             car.move(dt) # maybe car also should be coded as a sprite???
             car.update(dt)

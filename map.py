@@ -2,28 +2,28 @@ from __future__ import annotations
 import pygame as pg
 
 from CSVParser import CSVParser
-from vector2d import Vector2D
-from wall import Wall
-from surface import Surface
-from surfaceType import SurfaceType
 
-from math import sin, cos, radians, sqrt
+from math import sin, cos, radians
 
 
 class Map:
-    def __init__(self, id, width, height):
+    def __init__(self, id, width, height, stopwatch):
         self.id = id
         self.width = width
         self.height = height
         self.all_walls = pg.sprite.Group()
         self.all_surfaces = pg.sprite.Group()
-        self.all_booster = pg.sprite.Group()
+        self.all_boosters = pg.sprite.Group()
+        self.places_for_boosters = []
         self.name = "Map"
+        self.stopwatch = stopwatch
 
     def place_objects(self):
         parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv")
 
         parser.draw_map(self)
+
+        #print(self.places_for_boosters)
 
         # surface1 = Surface(Vector2D(100, 100), 1500, 110, SurfaceType.ASPHALT)
         # self.all_surfaces.add(surface1)
@@ -129,24 +129,24 @@ class Map:
     def handle_collision_with_walls(self, car):
         collisions = pg.sprite.spritecollide(car, self.all_walls, False, pg.sprite.collide_mask)
         if collisions:  # it's a list of objects/sprites that collided with the car
-            print("Collision with wall")
             for col in collisions:
                 return True
 
         return False
 
-    def handle_collision_with_sufraces(self, car, traction: float):
+    def handle_collision_with_sufraces(self, car):
         slides = pg.sprite.spritecollide(car, self.all_surfaces, False, pg.sprite.collide_mask)
         if slides:
             for slide in slides:
                 if slide.rect.x == car.rect.x + car.speed * cos(
                         radians(car.direction)) and slide.rect.y == car.rect.y + car.speed * sin(
                         radians(car.direction)):
-                    traction = slide.adjust_fraction() #do sth about it later on!
+                        return slide.adjust_fraction() #do sth about it later on!
 
     def handle_collision_with_boosters(self, car):
         # collisions with boosters
-        pick_ups = pg.sprite.spritecollide(car, self.all_boosters, False, pg.sprite.collide_mask)  # maybe in this case it can be set to true
+        pick_ups = pg.sprite.spritecollide(car, self.all_boosters, True, pg.sprite.collide_mask)  # maybe in this case it can be set to true
         if pick_ups:
+            print("Booster picked up!")
             for boost in pick_ups:
-                pass  # activate booster!
+                boost.activate(car, self.stopwatch)

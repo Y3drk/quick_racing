@@ -7,9 +7,10 @@ from stopwatch import Stopwatch
 
 
 class Booster (pg.sprite.Sprite):
-    def __init__(self, position: Vector2D, change: int, image_name, type: BoosterType, dt): #change -> wartośc zmiany, jesli dotyczy zmian boolowskich to ==1
+    def __init__(self, position: Vector2D, change: int, type: BoosterType, dt): #change -> wartośc zmiany, jesli dotyczy zmian boolowskich to ==1
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load("./data/quick_racing_booster_"+image_name+".png").convert() # make booster images
+        self.image = pg.image.load("./data/quick_racing_booster_"+type.value[1]+".png").convert_alpha() # make booster images
+        self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         self.rect.x = position.x
         self.rect.y = position.y
@@ -24,6 +25,7 @@ class Booster (pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
 
     def activate(self, car: Car, stopwatch: Stopwatch):
+            print("Booster is activating")
             if self.type == BoosterType.SPEED:
                 car.speed += self.int_booster_value
                 #sleep(3)
@@ -36,7 +38,8 @@ class Booster (pg.sprite.Sprite):
                 pass
 
             elif self.type == BoosterType.DECREASE_TIMER: #the time of the lap is decreased
-                stopwatch.decrease_timer(1000)
+                print("deacreasing time")
+                stopwatch.decrease_timer(4000)
 
             elif self.type == BoosterType.FREEZE:
                 car.speed = 0
@@ -44,10 +47,10 @@ class Booster (pg.sprite.Sprite):
             else: #BoosterType.NO_TURNING -> self descriptive
                 pass
 
-            # we gotta find a way to make it last only a short amount of time -> like 3 seconds or so
+# we gotta find a way to make it last only a short amount of time -> like 3 seconds or so
             
-            #we can use dt
-            #we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
-            # -maybe maybe
+#we can use dt
+#we can also add "push" or something - it'd be like booster but with a single push (increase in speed in facing direction)
+# -maybe maybe
 
 
