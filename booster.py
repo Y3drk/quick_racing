@@ -27,13 +27,13 @@ class Booster (pg.sprite.Sprite):
     def activate(self, car: Car, stopwatch: Stopwatch):
             if self.type == BoosterType.SPEED:
                 car.speed += self.int_booster_value
-                #sleep(3)
-                #car.speed -= self.int_booster_value  -> idea for implementing duration!
+                #car.speed -= self.int_booster_value  -> idea for implementing duration is needed!
 
             elif self.type == BoosterType.TURNING: #turning is smoother/faster or slower
                 pass
 
             elif self.type == BoosterType.NO_COLLISIONS: #the car is "transparent"
+                #car.transparent = True
                 pass
 
             elif self.type == BoosterType.DECREASE_TIMER: #the time of the lap is decreased

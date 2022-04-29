@@ -23,6 +23,7 @@ class Car(pg.sprite.Sprite):
         self.rotation = rotation
         self.engine = engine
         self.map = curr_map
+        self.transparent = False
 
         self.mask = pg.mask.from_surface(self.image)
 

@@ -129,6 +129,9 @@ class Map:
     #     return Vector2D(best_x, best_y),best_spot
 
     def handle_collision_with_walls(self, car):
+        if car.transparent:
+            return False
+
         collisions = pg.sprite.spritecollide(car, self.all_walls, False, pg.sprite.collide_mask)
         if collisions:  # it's a list of objects/sprites that collided with the car
             for col in collisions:
