@@ -25,7 +25,6 @@ class Booster (pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
 
     def activate(self, car: Car, stopwatch: Stopwatch):
-            print("Booster is activating")
             if self.type == BoosterType.SPEED:
                 car.speed += self.int_booster_value
                 #sleep(3)
@@ -38,7 +37,6 @@ class Booster (pg.sprite.Sprite):
                 pass
 
             elif self.type == BoosterType.DECREASE_TIMER: #the time of the lap is decreased
-                print("deacreasing time")
                 stopwatch.decrease_timer(4000)
 
             elif self.type == BoosterType.FREEZE:

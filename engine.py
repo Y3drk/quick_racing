@@ -47,7 +47,12 @@ class Engine:
         change = None
 
         #temp
-        what_booster = 3
+        ctrl = random.randrange(0, 2)
+        if ctrl == 0:
+            what_booster = 3
+        else:
+            what_booster = 2
+        #temp
 
         if what_booster == 0:
             new_booster_type = BoosterType.SPEED

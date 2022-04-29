@@ -7,7 +7,7 @@ class BoosterType(Enum):
     TURNING = (2, (255, 255, 255))
 
     #only positive
-    NO_COLLISIONS = (3, (255, 255, 255))
+    NO_COLLISIONS = (3, "nw_resized")
     DECREASE_TIMER = (4, "dt_resized")
 
     #only negative

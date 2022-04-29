@@ -2,6 +2,8 @@ from __future__ import annotations
 import pygame as pg
 
 from CSVParser import CSVParser
+from surfaceType import SurfaceType
+from surface import Surface
 
 from math import sin, cos, radians
 
@@ -138,15 +140,18 @@ class Map:
         slides = pg.sprite.spritecollide(car, self.all_surfaces, False, pg.sprite.collide_mask)
         if slides:
             for slide in slides:
+                if slide.type == "FINISHLINE": #for now its kinda stupid, but the general idea is alright
+                    self.stopwatch.restart_timer(pg.time.get_ticks())
+
                 if slide.rect.x == car.rect.x + car.speed * cos(
                         radians(car.direction)) and slide.rect.y == car.rect.y + car.speed * sin(
                         radians(car.direction)):
+
                         return slide.adjust_fraction() #do sth about it later on!
 
     def handle_collision_with_boosters(self, car):
         # collisions with boosters
         pick_ups = pg.sprite.spritecollide(car, self.all_boosters, True, pg.sprite.collide_mask)  # maybe in this case it can be set to true
         if pick_ups:
-            print("Booster picked up!")
             for boost in pick_ups:
                 boost.activate(car, self.stopwatch)

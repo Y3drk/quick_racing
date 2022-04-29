@@ -32,10 +32,10 @@ class Car(pg.sprite.Sprite):
         if not collision_test_result:
             self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
         else:
-            if self.speed > 0 :
-                self.position.subtract(8 * cos(radians(self.direction)), 8 * sin(radians(self.direction)))
+            if self.speed > 0:
+                self.position.subtract((self.speed + 4) * cos(radians(self.direction)), (self.speed + 4) * sin(radians(self.direction)))
             else:
-                self.position.add(6 * cos(radians(self.direction)), 6 * sin(radians(self.direction)))
+                self.position.add((self.speed + 2) * cos(radians(self.direction)), (self.speed + 2) * sin(radians(self.direction)))
 
             self.speed = -self.speed * 0.15
 
