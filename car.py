@@ -14,7 +14,7 @@ class Car(pg.sprite.Sprite):
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
 
-        self.name = "Car"
+        self.name = "car 1"
 
         self.id = id
         self.position = position

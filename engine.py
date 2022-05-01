@@ -24,14 +24,6 @@ class Engine:
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
 
-
-    # btw that's how we can load the map -> read all walls size and location from CSV then create
-    # them and add them all to sprite group,
-    # same probably could be done with ground types -> we can also handle fraction using collisions :)
-    # also I think it would be beneficial if all_walls were an attribute of the map
-    
-    #thought exactly the same thing :) -> can be done today during labs
-
     def spawn_booster(self, map: Map, dt):
 
         if random.randrange(0, 256) != 8:

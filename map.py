@@ -17,7 +17,7 @@ class Map:
         self.all_surfaces = pg.sprite.Group()
         self.all_boosters = pg.sprite.Group()
         self.places_for_boosters = []
-        self.name = "Map"
+        self.name = "map 1"
         self.stopwatch = stopwatch
 
     def place_objects(self):
@@ -143,8 +143,11 @@ class Map:
         slides = pg.sprite.spritecollide(car, self.all_surfaces, False, pg.sprite.collide_mask)
         if slides:
             for slide in slides:
-                if slide.type == "FINISHLINE": #for now its kinda stupid, but the general idea is alright
-                    self.stopwatch.restart_timer(pg.time.get_ticks())
+                if slide.type == "FINISHLINE":
+                    if int(self.stopwatch.get_time(pg.time.get_ticks()) / 1000 % 60) > 5: #placeholder: if at least 5 secs
+                        with open("./data/Records.csv", "a") as f:
+                            f.write("\n{},{},{}".format(car.name, self.name, self.stopwatch.get_time(pg.time.get_ticks())))
+                        self.stopwatch.restart_timer(pg.time.get_ticks())
 
                 if slide.rect.x == car.rect.x + car.speed * cos(
                         radians(car.direction)) and slide.rect.y == car.rect.y + car.speed * sin(

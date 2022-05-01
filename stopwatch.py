@@ -2,7 +2,6 @@ from __future__ import annotations
 import pygame as pg
 from vector2d import Vector2D
 
-
 class Stopwatch (pg.sprite.Sprite):
     def __init__(self, screen, clock, position: Vector2D):
         pg.sprite.Sprite.__init__(self)
@@ -32,3 +31,6 @@ class Stopwatch (pg.sprite.Sprite):
 
     def decrease_timer(self, value: int):
         self.difference += value
+
+    def get_time(self, ticks):
+        return ticks - self.difference
