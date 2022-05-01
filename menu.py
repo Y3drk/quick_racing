@@ -1,10 +1,11 @@
 import pygame as pg
 from engine import Engine
 from leaderboard import Leaderboard
+from settings import Settings
 
 white = (255,255,255)
-color_light = (170,170,170)
-color_dark = (100,100,100)
+color_light = (100, 200, 255)
+color_dark = (170,170,170)
 
 class Menu:
     #               LOGO
@@ -41,42 +42,48 @@ class Menu:
             elif pos == 3:
                 quit_color = color_light
             
-            pg.draw.rect(self.screen, play_color, [self.width/2 - 180, self.height/2 - 175, 360, 80])
-            pg.draw.rect(self.screen, leaderboard_color, [self.width/2 - 180, self.height/2 - 85, 360, 80])
-            pg.draw.rect(self.screen, settings_color, [self.width/2 - 180, self.height/2 + 5, 360, 80])
-            pg.draw.rect(self.screen, quit_color, [self.width/2 - 180, self.height/2 + 95, 360, 80])
+            pb = pg.draw.rect(self.screen, play_color, [self.width/2 - 180, self.height/2 - 175, 360, 80])
+            pg.draw.rect(self.screen, (0,0,0), pb, 2)
+            lb = pg.draw.rect(self.screen, leaderboard_color, [self.width/2 - 180, self.height/2 - 85, 360, 80])
+            pg.draw.rect(self.screen, (0,0,0), lb, 2)
+            sb = pg.draw.rect(self.screen, settings_color, [self.width/2 - 180, self.height/2 + 5, 360, 80])
+            pg.draw.rect(self.screen, (0,0,0), sb, 2)
+            qb = pg.draw.rect(self.screen, quit_color, [self.width/2 - 180, self.height/2 + 95, 360, 80])
+            pg.draw.rect(self.screen, (0,0,0), qb, 2)
             
             for event in pg.event.get():
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if pos == 0: #play button
-                        print("start")
                         engine = Engine(60)
                         engine.run()
                         run = False
                     if pos == 1: #leaderboard button
-                        print("leaderboard")
                         leaderboard = Leaderboard()
                         run = False
                         leaderboard.run()
                         run = True
                     if pos == 2: #settings button
-                        print("settings")
+                        settings = Settings()
+                        run = False
+                        settings.run()
+                        run = True
                     if pos == 3: #quit button
                         run = False
                 
                 if event.type == pg.QUIT:
                     run = False
                     
-            #font = pg.font.SysFont('Corbel', 35)
-            #play_text, play_rect = font.render("Play", True, white)
-            #self.screen.blit(play_text, (540,380))
-            #font.render_to(self.screen, (540,500), "Play", white)
-            #play_text, rect = font.render('Play', False, white)
-            #play_text = play_text.get_rect()
-            #play_text.center = (540,380) #doesnt show up???
-            #leaderboard_text = font.render('Leaderboard', False, white)
-            #settings_text = font.render('Settings', False, white)
-            #quit_text = font.render('Quit', False, white)
+            font = pg.font.SysFont('Calibri', 35)
+            
+            play_text = font.render("Play", 1, (0,0,0))
+            self.screen.blit(play_text, play_text.get_rect(center = pb.center))
+            leaderboard_text = font.render("Leaderboard", 1, (0,0,0))
+            self.screen.blit(leaderboard_text, leaderboard_text.get_rect(center = lb.center))
+            settings_text = font.render("Settings", 1, (0,0,0))
+            self.screen.blit(settings_text, settings_text.get_rect(center = sb.center))
+            quit_text = font.render("Quit", 1, (0,0,0))
+            self.screen.blit(quit_text, quit_text.get_rect(center = qb.center))
+            
             pg.display.update()
     
     def pointing(self):
