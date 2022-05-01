@@ -73,6 +73,7 @@ class Leaderboard:
 		w = 490
 		h = 90
 		self.scores = [pg.Rect(100, 100, w, h), pg.Rect(100, 200, w, h), pg.Rect(100, 300, w, h), pg.Rect(100, 400, w, h), pg.Rect(100, 500, w, h)]
+		self.quit_button = pg.draw.rect(self.screen, (100, 200, 255), [self.width - 400, self.height - 120, 360, 80], 1)
 		pg.display.update()
 		pg.display.set_caption("QUICK RACING")
 		
@@ -80,16 +81,20 @@ class Leaderboard:
 		background = pg.image.load("./data/leaderboard_bg.png")
 		background = pg.transform.scale(background, (self.width, self.height))
 		records = self.get_leaderboard()
-		quit_color = (240,230,140)
+		quit_color = (100, 200, 255)
 		run = True
 		while run:
 			self.screen.blit(background, (0,0))
-			pg.draw.rect(self.screen, quit_color, [self.width - 400, self.height - 120, 360, 80])
+
+			self.quit_button = pg.draw.rect(self.screen, quit_color,  [self.width - 400, self.height - 120, 360, 80])
+			pg.draw.rect(self.screen, (0, 0, 0), self.quit_button, 2)
 			if self.pointing():
-				quit_color = (100, 200, 255)
+				quit_color = (100,200,255)
 			else:
 				quit_color = (240,230,140)
-			
+			quit = self.font.render("Quit", 1, (0, 0, 0))
+			self.screen.blit(quit, quit.get_rect(center = self.quit_button.center))
+
 			self.cars_options.draw(self.screen)
 			self.maps_options.draw(self.screen)
 			for event in pg.event.get():
