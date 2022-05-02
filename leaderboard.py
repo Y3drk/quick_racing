@@ -16,13 +16,11 @@ class OptionBox():
 		self.draw_menu = False
 		self.menu_active = False
 		self.active_option = -1
-
 	def draw(self, surf):
 		pg.draw.rect(surf, self.highlight_color if self.menu_active else self.color, self.rect)
 		pg.draw.rect(surf, (0, 0, 0), self.rect, 2)
 		msg = self.font.render(self.option_list[self.selected], 1, (0, 0, 0))
 		surf.blit(msg, msg.get_rect(center = self.rect.center))
-
 		if self.draw_menu:
 			for i, text in enumerate(self.option_list):
 				rect = self.rect.copy()
@@ -32,11 +30,9 @@ class OptionBox():
 				surf.blit(msg, msg.get_rect(center = rect.center))
 			outer_rect = (self.rect.x, self.rect.y + self.rect.height, self.rect.width, self.rect.height * len(self.option_list))
 			pg.draw.rect(surf, (0, 0, 0), outer_rect, 2)
-
 	def update(self, event):
 		mpos = pg.mouse.get_pos()
 		self.menu_active = self.rect.collidepoint(mpos)
-		
 		self.active_option = -1
 		for i in range(len(self.option_list)):
 			rect = self.rect.copy()
@@ -44,10 +40,8 @@ class OptionBox():
 			if rect.collidepoint(mpos):
 				self.active_option = i
 				break
-
 		if not self.menu_active and self.active_option == -1:
 			self.draw_menu = False
-			
 		if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
 			if self.menu_active:
 				self.draw_menu = not self.draw_menu
@@ -121,8 +115,8 @@ class Leaderboard:
 					millis = records[i][2] % 1000
 					seconds = int(records[i][2] / 1000 % 60)
 					minutes = int(records[i][2] / 60000 % 24)
-					t = "{minutes:02d}:{seconds:02d}:{millis}".format(minutes=minutes, millis=millis, seconds=seconds)
-					msg = self.font.render(t + ", " + str(records[i][0]) + ", " + str(records[i][1]), 1, (0, 0, 0))
+					t = "{minutes:02d}.{seconds:02d}.{millis}".format(minutes=minutes, millis=millis, seconds=seconds)
+					msg = self.font.render(records[i][3]+ ": " + t, 1, (0, 0, 0))
 				self.screen.blit(msg, msg.get_rect(center = self.scores[i].center))
 
 			pg.display.update()

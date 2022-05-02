@@ -9,7 +9,7 @@ from math import sin, cos, radians
 
 
 class Map:
-    def __init__(self, id, width, height, stopwatch):
+    def __init__(self, id, width, height, stopwatch, player_name):
         self.id = id
         self.width = width
         self.height = height
@@ -19,6 +19,7 @@ class Map:
         self.places_for_boosters = []
         self.name = "map 1"
         self.stopwatch = stopwatch
+        self.player_name = player_name
 
     def place_objects(self):
         parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv")
@@ -146,7 +147,7 @@ class Map:
                 if slide.type == "FINISHLINE":
                     if int(self.stopwatch.get_time(pg.time.get_ticks()) / 1000 % 60) > 5: #placeholder: if at least 5 secs
                         with open("./data/Records.csv", "a") as f:
-                            f.write("\n{},{},{}".format(car.name, self.name, self.stopwatch.get_time(pg.time.get_ticks())))
+                            f.write("\n{},{},{},{}".format(car.name, self.name, self.stopwatch.get_time(pg.time.get_ticks()), self.player_name))
                         self.stopwatch.restart_timer(pg.time.get_ticks())
 
                 if slide.rect.x == car.rect.x + car.speed * cos(

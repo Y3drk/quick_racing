@@ -23,6 +23,7 @@ class Engine:
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
+        self.player_name = "Player 1"
 
     def spawn_booster(self, map: Map, dt):
 
@@ -93,7 +94,7 @@ class Engine:
         run = True
         stopwatch = self.start_timer()
 
-        curr_map = Map(0, x, y, stopwatch)
+        curr_map = Map(0, x, y, stopwatch, self.player_name)
         map_img = pg.image.load("./data/grass.png")
         curr_map.place_objects()
 
