@@ -10,15 +10,15 @@ class Car(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.id = id
         if self.id == 0:
-            self.__image = pg.image.load("./data/supra_new.png").convert_alpha()
+            self.__image = pg.image.load("./data/supra_new.png").convert_alpha()  
+            self.name = "car 1"
         else:
             self.__image = pg.image.load("./data/supra_new.png").convert_alpha() #zmienic na nowe auta
+            self.name = "car 1"
         self.image = self.__image.copy()
         # self.image.fill((0, 0, 0))
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
-
-        self.name = "car 1"
 
         self.id = id
         self.position = position
@@ -100,7 +100,8 @@ class Car(pg.sprite.Sprite):
             self.mask = pg.mask.from_surface(self.image)
 
     def accelerate(self, dt):
-        self.speed += self.engine / dt
+        c = min(2, 0.3+(self.speed/10)**2)
+        self.speed += self.engine * c / dt
 
     def decelerate(self, dt):
         self.speed -= self.engine / (2 * dt)

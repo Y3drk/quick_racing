@@ -16,7 +16,7 @@ class Map:
         self.all_surfaces = pg.sprite.Group()
         self.all_boosters = pg.sprite.Group()
         self.places_for_boosters = []
-        self.name = "map 1"
+        self.name = "map {}".format(id+1)
         self.stopwatch = stopwatch
         self.player_name = player_name
 
