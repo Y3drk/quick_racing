@@ -8,7 +8,11 @@ WHITE = (255, 255, 255)
 class Car(pg.sprite.Sprite):
     def __init__(self, id, position, speed, direction, rotation, engine, curr_map: Map):
         pg.sprite.Sprite.__init__(self)
-        self.__image = pg.image.load("./data/supra_new.png").convert_alpha()
+        self.id = id
+        if self.id == 0:
+            self.__image = pg.image.load("./data/supra_new.png").convert_alpha()
+        else:
+            self.__image = pg.image.load("./data/supra_new.png").convert_alpha() #zmienic na nowe auta
         self.image = self.__image.copy()
         # self.image.fill((0, 0, 0))
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels

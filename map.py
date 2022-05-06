@@ -7,7 +7,6 @@ from surface import Surface
 
 from math import sin, cos, radians
 
-
 class Map:
     def __init__(self, id, width, height, stopwatch, player_name):
         self.id = id
@@ -22,7 +21,12 @@ class Map:
         self.player_name = player_name
 
     def place_objects(self):
-        parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv")
+        if self.id == 0:
+            parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv")
+        elif self.id == 1:
+            parser = CSVParser("./data/map2.csv", "../data/Leaderboard.csv")
+        else:
+            parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv") #zmienic potem na nowa mape 3
 
         parser.draw_map(self)
 

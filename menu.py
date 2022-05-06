@@ -24,6 +24,7 @@ class Menu:
         self.screen = pg.display.set_mode((self.width, self.height))
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
+        self.settings = Settings()
         
     def run(self):
         background = pg.image.load("./data/background_beg.png")
@@ -54,7 +55,8 @@ class Menu:
             for event in pg.event.get():
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if pos == 0: #play button
-                        engine = Engine(60)
+                        name, map, car = self.settings.get_settings()
+                        engine = Engine(60, name, car, map)
                         engine.run()
                         run = False
                     if pos == 1: #leaderboard button
@@ -63,9 +65,8 @@ class Menu:
                         leaderboard.run()
                         run = True
                     if pos == 2: #settings button
-                        settings = Settings()
                         run = False
-                        settings.run()
+                        self.settings.run()
                         run = True
                     if pos == 3: #quit button
                         run = False

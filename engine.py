@@ -16,14 +16,16 @@ from math import sin, cos, radians
 
 
 class Engine:
-    def __init__(self, refresh_rate):
+    def __init__(self, refresh_rate, name, car, map):
         self.refresh = refresh_rate
         pg.init()
         self.screen = pg.display.set_mode((1480,780))
         pg.display.update()
         pg.display.set_caption("QUICK RACING")
         self.clock = pg.time.Clock()
-        self.player_name = "Player 1"
+        self.player_name = name
+        self.car = car
+        self.map = map
 
     def spawn_booster(self, map: Map, dt):
 
@@ -94,11 +96,11 @@ class Engine:
         run = True
         stopwatch = self.start_timer()
 
-        curr_map = Map(0, x, y, stopwatch, self.player_name)
+        curr_map = Map(self.map, x, y, stopwatch, self.player_name)
         map_img = pg.image.load("./data/grass.png")
         curr_map.place_objects()
 
-        car = Car(0, Vector2D(50, 100), 0, 0, 10, 50, curr_map)
+        car = Car(self.car, Vector2D(50, 100), 0, 0, 10, 50, curr_map)
 
         while run:
             dt = self.clock.tick(self.refresh)
