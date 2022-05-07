@@ -101,7 +101,7 @@ class Engine:
         map_img = pg.image.load("./data/grass.png")
         curr_map.place_objects()
 
-        id, name, engine = CSVParser(None, None, "./data/Cars.csv").read_car_statistics(0)
+        id, name, engine = CSVParser(None, None, "./data/Cars.csv").read_car_statistics(self.car)
         car = Car(id, Vector2D(50, 100), 0, 0, 10, engine, name, curr_map)
 
         while run:
@@ -118,7 +118,7 @@ class Engine:
             curr_map.all_walls.draw(self.screen)
             curr_map.all_walls.update()
 
-            self.spawn_booster(curr_map, dt)
+            #self.spawn_booster(curr_map, dt) temporarily out of service
 
             curr_map.all_boosters.draw(self.screen)
             curr_map.all_boosters.update()

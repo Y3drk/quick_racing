@@ -13,3 +13,4 @@ class SurfaceType(Enum):
     SAND = (0.25, (255, 255, 0))
     FINISHLINE = (0.9, "./data/finish_line.png") #special case where there will be an image
     SIDE = (0.9, "./data/side.png")
+    CHECKPOINT = (0.9, (255, 0, 0))

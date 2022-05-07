@@ -1,4 +1,4 @@
-import map
+
 from wall import Wall
 from surface import Surface
 from surfaceType import SurfaceType
@@ -12,7 +12,7 @@ class CSVParser:
         self.leaderboard = leaderboard
         self.cars = cars
 
-    def draw_map(self, map: map):
+    def draw_map(self, map):
         file = open(self.source_file)
         csv_reader = csv.reader(file)
         header = next(csv_reader)
@@ -67,6 +67,10 @@ class CSVParser:
 
                 elif row[5] == "SIDE":
                     map.all_surfaces.add(Surface(position, width, height, SurfaceType.SIDE, rotation))
+
+                elif row[5] == "CHECKPOINT":
+                    map.all_surfaces.add(Surface(position, width, height, SurfaceType.CHECKPOINT, rotation))
+                    map.checkpoints.append(False)
 
         file.close()
 

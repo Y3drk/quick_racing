@@ -16,18 +16,14 @@ class Map:
         self.all_surfaces = pg.sprite.Group()
         self.all_boosters = pg.sprite.Group()
         self.places_for_boosters = []
-        self.name = "map {}".format(id+1)
+        self.name = "map{}".format(id+1)
         self.stopwatch = stopwatch
         self.player_name = player_name
+        self.checkpoints = []
+        self.placement = 0
 
     def place_objects(self):
-        if self.id == 0:
-            parser = CSVParser("./data/map1.csv", "./data/Leaderboard.csv",None)
-        elif self.id == 1:
-            parser = CSVParser("./data/map2.csv", "./data/Leaderboard.csv", None)
-        else:
-            parser = CSVParser("./data/map1.csv", "./data/Leaderboard.csv", None) #zmienic potem na nowa mape 3
-
+        parser = CSVParser("./data/"+self.name+".csv", "./data/Leaderboard.csv",None)
         parser.draw_map(self)
 
         #print(self.places_for_boosters)
@@ -149,10 +145,26 @@ class Map:
         if slides:
             for slide in slides:
                 if slide.type == "FINISHLINE":
-                    if int(self.stopwatch.get_time(pg.time.get_ticks()) / 1000 % 60) > 5: #placeholder: if at least 5 secs
+                    if False not in self.checkpoints: #int(self.stopwatch.get_time(pg.time.get_ticks()) / 1000 % 60) > 5: #placeholder: if at least 5 secs
                         with open("./data/Records.csv", "a") as f:
                             f.write("\n{},{},{},{}".format(car.name, self.name, self.stopwatch.get_time(pg.time.get_ticks()), self.player_name))
                         self.stopwatch.restart_timer(pg.time.get_ticks())
+                        self.placement = 0
+
+                        for i in range(0, len(self.checkpoints)):
+                            self.checkpoints[i] = False
+
+                        for slide in self.all_surfaces:
+                            slide.checked = False
+
+
+                if slide.type == "CHECKPOINT":
+                    if self.placement <= len(self.checkpoints)-1 and self.checkpoints[self.placement] == False and slide.checked == False:
+                        self.checkpoints[self.placement] = True
+                        self.placement += 1
+                        slide.checked = True
+
+
 
                 if slide.rect.x == car.rect.x + car.speed * cos(
                         radians(car.direction)) and slide.rect.y == car.rect.y + car.speed * sin(
