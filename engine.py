@@ -42,13 +42,13 @@ class Engine:
         new_booster_type = None
         change = None
 
-        #temp
-        ctrl = random.randrange(0, 2)
-        if ctrl == 0:
-            what_booster = 3
-        else:
-            what_booster = 2
-        #temp
+        # #temp
+        # ctrl = random.randrange(0, 2)
+        # if ctrl == 0:
+        #     what_booster = 3
+        # else:
+        #     what_booster = 2
+        # #temp
 
         if what_booster == 0:
             new_booster_type = BoosterType.SPEED
@@ -56,7 +56,7 @@ class Engine:
 
         elif what_booster == 1:
             new_booster_type = BoosterType.TURNING
-            change = random.randrange(-3 , 3)
+            change = random.randrange(-3, 3)
 
         elif what_booster == 2:
             new_booster_type = BoosterType.NO_COLLISIONS
@@ -75,7 +75,7 @@ class Engine:
             change = 1
 
         map.all_boosters.add(Booster(Vector2D(x_coordinate, y_coordinate), change, new_booster_type, dt))
-        #print("Booster spawned!\n")
+        print("Booster spawned!\n")
 
 
     def start_timer(self):
@@ -118,7 +118,7 @@ class Engine:
             curr_map.all_walls.draw(self.screen)
             curr_map.all_walls.update()
 
-            #self.spawn_booster(curr_map, dt) temporarily out of service
+            self.spawn_booster(curr_map, dt)
 
             curr_map.all_boosters.draw(self.screen)
             curr_map.all_boosters.update()
