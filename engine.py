@@ -12,6 +12,7 @@ from map import Map
 from stopwatch import Stopwatch
 from booster import Booster
 from boosterType import BoosterType
+from CSVParser import CSVParser
 from math import sin, cos, radians
 
 
@@ -100,7 +101,8 @@ class Engine:
         map_img = pg.image.load("./data/grass.png")
         curr_map.place_objects()
 
-        car = Car(self.car, Vector2D(50, 100), 0, 0, 10, 50, curr_map)
+        id, name, engine = CSVParser(None, None, "./data/Cars.csv").read_car_statistics(0)
+        car = Car(id, Vector2D(50, 100), 0, 0, 10, engine, name, curr_map)
 
         while run:
             dt = self.clock.tick(self.refresh)

@@ -22,11 +22,11 @@ class Map:
 
     def place_objects(self):
         if self.id == 0:
-            parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv")
+            parser = CSVParser("./data/map1.csv", "./data/Leaderboard.csv",None)
         elif self.id == 1:
-            parser = CSVParser("./data/map2.csv", "../data/Leaderboard.csv")
+            parser = CSVParser("./data/map2.csv", "./data/Leaderboard.csv", None)
         else:
-            parser = CSVParser("./data/map1.csv", "../data/Leaderboard.csv") #zmienic potem na nowa mape 3
+            parser = CSVParser("./data/map1.csv", "./data/Leaderboard.csv", None) #zmienic potem na nowa mape 3
 
         parser.draw_map(self)
 

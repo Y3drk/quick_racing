@@ -6,15 +6,11 @@ WHITE = (255, 255, 255)
 
 
 class Car(pg.sprite.Sprite):
-    def __init__(self, id, position, speed, direction, rotation, engine, curr_map: Map):
+    def __init__(self, id, position, speed, direction, rotation, engine, name, curr_map: Map):
         pg.sprite.Sprite.__init__(self)
         self.id = id
-        if self.id == 0:
-            self.__image = pg.image.load("./data/supra_new.png").convert_alpha()  
-            self.name = "car 1"
-        else:
-            self.__image = pg.image.load("./data/supra_new.png").convert_alpha() #zmienic na nowe auta
-            self.name = "car 1"
+        self.name = name
+        self.__image = pg.image.load("./data/"+self.name+".png").convert_alpha()
         self.image = self.__image.copy()
         # self.image.fill((0, 0, 0))
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
@@ -27,6 +23,8 @@ class Car(pg.sprite.Sprite):
         self.rotation = rotation
         self.engine = engine
         self.map = curr_map
+
+        #dict of all boosters instead of this
         self.transparent = False
 
         self.mask = pg.mask.from_surface(self.image)
@@ -67,7 +65,7 @@ class Car(pg.sprite.Sprite):
 
         if self.speed > 0:
             #print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= self.speed * (0.1 + self.speed * 0.01)  # v drogi i v*v powietrza
+            self.speed -= self.speed * (0.1 + self.speed * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
         elif self.speed < 0:
             self.speed += self.speed * (0.03 + self.speed * 0.05)  # v drogi i v*v powietrza
 

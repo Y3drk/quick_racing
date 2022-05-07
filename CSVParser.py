@@ -7,9 +7,10 @@ from vector2d import Vector2D
 
 
 class CSVParser:
-    def __init__(self, map_source, leaderboard):
+    def __init__(self, map_source, leaderboard, cars):
         self.source_file = map_source
         self.leaderboard = leaderboard
+        self.cars = cars
 
     def draw_map(self, map: map):
         file = open(self.source_file)
@@ -95,6 +96,23 @@ class CSVParser:
 
         #now we can do what we want with the rows - it's up to us what
 
-
         file.close()
         pass
+
+    def read_car_statistics(self, car_id:int):
+        #planned cars file structure:
+        #[0] - id
+        #[1] - NAME
+        #[2] - engine
+
+        file = open(self.cars)
+        csv_reader = csv.reader(file)
+        header = next(csv_reader)
+
+        rows = []
+
+        for row in csv_reader:
+            rows.append(row)
+
+        #we return this data to engine or whatever and it will create a car
+        return int(rows[car_id][0]), rows[car_id][1], int(rows[car_id][2])
