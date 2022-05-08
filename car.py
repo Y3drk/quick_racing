@@ -10,7 +10,7 @@ class Car(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.id = id
         self.name = name
-        self.__image = pg.image.load("./data/"+self.name+".png").convert_alpha()
+        self.__image = pg.image.load("./data/" + self.name + ".png").convert_alpha()
         self.image = self.__image.copy()
         # self.image.fill((0, 0, 0))
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
@@ -24,7 +24,7 @@ class Car(pg.sprite.Sprite):
         self.engine = engine
         self.map = curr_map
 
-        #dict of all boosters instead of this
+        # dict of all boosters instead of this
         self.boosters = {"transparent": [False, 0], "speed": [0, 0], "noTurning": [False, 0],
                          "turning": [0, 0], "freeze": [False, 0]}
 
@@ -42,9 +42,11 @@ class Car(pg.sprite.Sprite):
                 self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
             else:
                 if self.speed + self.boosters["speed"][0] > 0:
-                    self.position.subtract((self.speed + self.boosters["speed"][0] + 4) * cos(radians(self.direction)), (self.speed + self.boosters["speed"][0] + 4) * sin(radians(self.direction)))
+                    self.position.subtract((self.speed + self.boosters["speed"][0] + 4) * cos(radians(self.direction)),
+                                           (self.speed + self.boosters["speed"][0] + 4) * sin(radians(self.direction)))
                 else:
-                    self.position.add((self.speed + self.boosters["speed"][0] + 2) * cos(radians(self.direction)), (self.speed + self.boosters["speed"][0] + 2) * sin(radians(self.direction)))
+                    self.position.add((self.speed + self.boosters["speed"][0] + 2) * cos(radians(self.direction)),
+                                      (self.speed + self.boosters["speed"][0] + 2) * sin(radians(self.direction)))
 
                 self.speed = -(self.speed + self.boosters["speed"][0]) * 0.15
 
@@ -56,7 +58,6 @@ class Car(pg.sprite.Sprite):
 
         self.mask = pg.mask.from_surface(self.image)
 
-
     def move(self, dt):
 
         pressed = pg.key.get_pressed()
@@ -64,20 +65,24 @@ class Car(pg.sprite.Sprite):
             self.accelerate(dt)
         if pressed[pg.K_DOWN]:
             self.decelerate(dt)
-        if pressed[pg.K_LEFT]:
-            self.rotate_left(dt)
-        if pressed[pg.K_RIGHT]:
-            self.rotate_right(dt)
+        if not self.boosters["noTurning"][0]:
+            if pressed[pg.K_LEFT]:
+                self.rotate_left(dt)
+            if pressed[pg.K_RIGHT]:
+                self.rotate_right(dt)
 
         if self.speed > 0:
-            #print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= (self.speed + self.boosters["speed"][0]) * (0.1 + (self.speed + self.boosters["speed"][0]) * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
+            # print(self.speed, self.speed * (0.1 + self.speed * 0.01))
+            self.speed -= (self.speed + self.boosters["speed"][0]) * (0.1 + (self.speed + self.boosters["speed"][
+                0]) * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
         elif self.speed < 0:
-            self.speed += (self.speed + self.boosters["speed"][0]) * (0.03 + (self.speed + self.boosters["speed"][0]) * 0.05)  # v drogi i v*v powietrza
+            self.speed += (self.speed + self.boosters["speed"][0]) * (
+                        0.03 + (self.speed + self.boosters["speed"][0]) * 0.05)  # v drogi i v*v powietrza
 
     def rotate_left(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction - 6 * (self.speed + self.boosters["speed"][0]) * self.rotation / (dt ** 2)) % 360
+            self.direction = (self.direction - (6 + self.boosters["turning"][0]) * (self.speed + self.boosters["speed"][0]) * self.rotation / (
+                        dt ** 2)) % 360
 
             if self.direction < 0:
                 self.direction += 360
@@ -89,7 +94,8 @@ class Car(pg.sprite.Sprite):
 
     def rotate_right(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction + 6 * (self.speed + self.boosters["speed"][0]) * self.rotation / (dt ** 2)) % 360
+            self.direction = (self.direction + (6 + self.boosters["turning"][0]) * (self.speed + self.boosters["speed"][0]) * self.rotation / (
+                        dt ** 2)) % 360
             if self.direction > 360:
                 self.direction -= 360
 
@@ -100,12 +106,8 @@ class Car(pg.sprite.Sprite):
             self.mask = pg.mask.from_surface(self.image)
 
     def accelerate(self, dt):
-        c = min(2, 0.3+(self.speed/10)**2)
+        c = min(2, 0.3 + (self.speed / 10) ** 2)
         self.speed += self.engine * c / dt
 
     def decelerate(self, dt):
         self.speed -= self.engine / (2 * dt)
-
-
-
-

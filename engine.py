@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import asyncio
 import random
 
 import pygame as pg
 
-import boosterType
 from vector2d import Vector2D
 from car import Car
 from map import Map
@@ -13,7 +11,6 @@ from stopwatch import Stopwatch
 from booster import Booster
 from boosterType import BoosterType
 from CSVParser import CSVParser
-from math import sin, cos, radians
 
 
 class Engine:
@@ -37,18 +34,9 @@ class Engine:
         x_coordinate = random.randrange(map.places_for_boosters[place][0], map.places_for_boosters[place][2])
         y_coordinate = random.randrange(map.places_for_boosters[place][1], map.places_for_boosters[place][3])
 
-
         what_booster = random.randrange(0,6)
         new_booster_type = None
         change = None
-
-        # #temp
-        # ctrl = random.randrange(0, 2)
-        # if ctrl == 0:
-        #     what_booster = 3
-        # else:
-        #     what_booster = 2
-        # #temp
 
         if what_booster == 0:
             new_booster_type = BoosterType.SPEED
@@ -75,8 +63,6 @@ class Engine:
             change = 1
 
         map.all_boosters.add(Booster(Vector2D(x_coordinate, y_coordinate), change, new_booster_type, dt))
-        #print("Booster spawned!\n")
-
 
     def start_timer(self):
         stopwatch = Stopwatch(self.screen, self.clock, Vector2D(1300, 40))
@@ -84,13 +70,7 @@ class Engine:
         return stopwatch
 
     def run(self):
-        #temporarily for boosters
-        # booster1 = Booster(Vector2D(700, 700), 30, "dt",BoosterType.SPEED, self.clock.tick(self.refresh))
-        # self.all_boosters.add(booster1)
-
         traction = 0.15
-
-        # car_img = pg.image.load("./data/car.png") #done temporarily inside the car class
 
         x, y = self.screen.get_size()
 
@@ -111,10 +91,6 @@ class Engine:
             curr_map.all_surfaces.draw(self.screen)
             curr_map.all_surfaces.update()
 
-            #self.screen.blit(car.image, (car.position.x, car.position.y))
-            #self.all_cars.draw(self.screen)
-            #added
-
             curr_map.all_walls.draw(self.screen)
             curr_map.all_walls.update()
 
@@ -123,18 +99,13 @@ class Engine:
             curr_map.all_boosters.draw(self.screen)
             curr_map.all_boosters.update()
 
-            car.move(dt) # maybe car also should be coded as a sprite???
+            car.move(dt)
             car.update(dt)
 
             self.screen.blit(car.image, (car.position.x, car.position.y))
 
-            #pg.draw.rect(self.screen, (0,0,0), car, 3)
-
             print(car.boosters)
             print("------------")
-
-
-            #print(traction) no we have to include different surfaces in the movement of the car
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -142,6 +113,5 @@ class Engine:
 
             ticks = pg.time.get_ticks()
             stopwatch.display_timer(ticks)
-
 
             pg.display.flip()
