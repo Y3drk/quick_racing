@@ -38,7 +38,7 @@ class Engine:
         y_coordinate = random.randrange(map.places_for_boosters[place][1], map.places_for_boosters[place][3])
 
 
-        what_booster = random.randrange(0,5)
+        what_booster = random.randrange(0,6)
         new_booster_type = None
         change = None
 
@@ -52,7 +52,7 @@ class Engine:
 
         if what_booster == 0:
             new_booster_type = BoosterType.SPEED
-            change = random.randrange(-100, 100)
+            change = random.randrange(-12, 12)
 
         elif what_booster == 1:
             new_booster_type = BoosterType.TURNING
@@ -75,7 +75,7 @@ class Engine:
             change = 1
 
         map.all_boosters.add(Booster(Vector2D(x_coordinate, y_coordinate), change, new_booster_type, dt))
-        print("Booster spawned!\n")
+        #print("Booster spawned!\n")
 
 
     def start_timer(self):
@@ -130,6 +130,8 @@ class Engine:
 
             #pg.draw.rect(self.screen, (0,0,0), car, 3)
 
+            print(car.boosters)
+            print("------------")
 
 
             #print(traction) no we have to include different surfaces in the movement of the car

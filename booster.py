@@ -17,7 +17,7 @@ class Booster (pg.sprite.Sprite):
 
         self.type = type
         self.int_booster_value = change
-        self.duration = 3
+        self.duration = 80
 
         self.dt = dt #refresh rate -> to use in car
 
@@ -26,23 +26,23 @@ class Booster (pg.sprite.Sprite):
 
     def activate(self, car: Car, stopwatch: Stopwatch):
             if self.type == BoosterType.SPEED:
-                pass
-                #car.speed += self.int_booster_value
-                #car.speed -= self.int_booster_value  -> idea for implementing duration is needed!
+                car.boosters["speed"] = [self.int_booster_value, pg.time.get_ticks() * self.duration]
+                print("SP activated ->", car.boosters)
 
             elif self.type == BoosterType.TURNING: #turning is smoother/faster or slower
                 pass
 
             elif self.type == BoosterType.NO_COLLISIONS: #the car is "transparent"
-                #car.transparent = True
-                pass
+                car.boosters["transparent"] = [True, pg.time.get_ticks() * self.duration]
+                print("NW activated ->", car.boosters)
 
             elif self.type == BoosterType.DECREASE_TIMER: #the time of the lap is decreased
                 stopwatch.decrease_timer(4000)
 
             elif self.type == BoosterType.FREEZE:
-                #car.speed = 0
-                pass
+                car.boosters["freeze"] = [True, pg.time.get_ticks() * self.duration]
+                print("FR activated ->", car.boosters)
+
 
             else: #BoosterType.NO_TURNING -> self descriptive
                 pass

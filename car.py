@@ -25,25 +25,31 @@ class Car(pg.sprite.Sprite):
         self.map = curr_map
 
         #dict of all boosters instead of this
-        self.transparent = False
+        self.boosters = {"transparent": [False, 0], "speed": [0, 0], "noTurning": [False, 0],
+                         "turning": [0, 0], "freeze": [False, 0]}
 
         self.mask = pg.mask.from_surface(self.image)
 
     def update(self, dt):
-        collision_test_result = self.map.handle_collision_with_walls(self)
+        self.map.handle_boosters(self)
 
-        if not collision_test_result:
-            self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
+        if self.boosters["freeze"][0]:
+            self.speed = 0
         else:
-            if self.speed > 0:
-                self.position.subtract((self.speed + 4) * cos(radians(self.direction)), (self.speed + 4) * sin(radians(self.direction)))
+            collision_test_result = self.map.handle_collision_with_walls(self)
+
+            if not collision_test_result:
+                self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
             else:
-                self.position.add((self.speed + 2) * cos(radians(self.direction)), (self.speed + 2) * sin(radians(self.direction)))
+                if self.speed + self.boosters["speed"][0] > 0:
+                    self.position.subtract((self.speed + self.boosters["speed"][0] + 4) * cos(radians(self.direction)), (self.speed + self.boosters["speed"][0] + 4) * sin(radians(self.direction)))
+                else:
+                    self.position.add((self.speed + self.boosters["speed"][0] + 2) * cos(radians(self.direction)), (self.speed + self.boosters["speed"][0] + 2) * sin(radians(self.direction)))
 
-            self.speed = -self.speed * 0.15
+                self.speed = -(self.speed + self.boosters["speed"][0]) * 0.15
 
-        new_traction = self.map.handle_collision_with_sufraces(self)
-        self.map.handle_collision_with_boosters(self)
+            new_traction = self.map.handle_collision_with_sufraces(self)
+            self.map.handle_collision_with_boosters(self)
 
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.position.x, self.position.y
@@ -65,17 +71,13 @@ class Car(pg.sprite.Sprite):
 
         if self.speed > 0:
             #print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= self.speed * (0.1 + self.speed * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
+            self.speed -= (self.speed + self.boosters["speed"][0]) * (0.1 + (self.speed + self.boosters["speed"][0]) * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
         elif self.speed < 0:
-            self.speed += self.speed * (0.03 + self.speed * 0.05)  # v drogi i v*v powietrza
-
-
-    # def collision(self, wall):
-    #    self.direction += 180 - abs(self.direction - wall.get_facing)
+            self.speed += (self.speed + self.boosters["speed"][0]) * (0.03 + (self.speed + self.boosters["speed"][0]) * 0.05)  # v drogi i v*v powietrza
 
     def rotate_left(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction - 6 * self.speed * self.rotation / (dt ** 2)) % 360
+            self.direction = (self.direction - 6 * (self.speed + self.boosters["speed"][0]) * self.rotation / (dt ** 2)) % 360
 
             if self.direction < 0:
                 self.direction += 360
@@ -87,7 +89,7 @@ class Car(pg.sprite.Sprite):
 
     def rotate_right(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction + 6 * self.speed * self.rotation / (dt ** 2)) % 360
+            self.direction = (self.direction + 6 * (self.speed + self.boosters["speed"][0]) * self.rotation / (dt ** 2)) % 360
             if self.direction > 360:
                 self.direction -= 360
 
@@ -103,5 +105,7 @@ class Car(pg.sprite.Sprite):
 
     def decelerate(self, dt):
         self.speed -= self.engine / (2 * dt)
+
+
 
 

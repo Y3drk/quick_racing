@@ -130,7 +130,7 @@ class Map:
     #     return Vector2D(best_x, best_y),best_spot
 
     def handle_collision_with_walls(self, car):
-        if car.transparent:
+        if car.boosters["transparent"][0]:
             return False
 
         collisions = pg.sprite.spritecollide(car, self.all_walls, False, pg.sprite.collide_mask)
@@ -178,3 +178,14 @@ class Map:
         if pick_ups:
             for boost in pick_ups:
                 boost.activate(car, self.stopwatch)
+
+    def handle_boosters(self, car):
+        for t in car.boosters.values():
+            t[1] -= pg.time.get_ticks()
+            if t[1] <= 0:
+                if t[0] == True:
+                    t[0] = False
+                else:
+                    t[0] = 0
+
+                t[1] = 0
