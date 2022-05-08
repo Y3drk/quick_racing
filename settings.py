@@ -104,7 +104,7 @@ class Settings:
                     self.car = car_selected_option
                 map_selected_option = self.maps_options.update(event)
                 if map_selected_option >= 0:
-                    self.car = map_selected_option
+                    self.map = map_selected_option
                 if event.type == pg.MOUSEBUTTONDOWN:
                     active = self.text_input.collidepoint(event.pos)
                 if event.type == pg.KEYDOWN:

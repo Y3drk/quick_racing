@@ -55,7 +55,7 @@ class Menu:
             for event in pg.event.get():
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if pos == 0: #play button
-                        name, map, car = self.settings.get_settings()
+                        name, car, map = self.settings.get_settings()
                         engine = Engine(60, name, car, map)
                         engine.run()
                         run = False
