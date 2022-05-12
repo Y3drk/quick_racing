@@ -16,7 +16,6 @@ class Car(pg.sprite.Sprite):
         self.image.set_colorkey(WHITE)  # this will make the img ignore all the white pixels
         self.rect = self.image.get_rect()
 
-        self.id = id
         self.position = position
         self.speed = speed
         self.direction = direction
@@ -29,6 +28,14 @@ class Car(pg.sprite.Sprite):
                          "turning": [0, 0], "freeze": [False, 0]}
 
         self.mask = pg.mask.from_surface(self.image)
+        
+        #
+        self.nitro_pow = 2 #power
+        self.nitro_cap = 60 #capacity
+        self.nitro_dur = 40 #duration
+        self.nitro_restore = 0.2 #restoration speed
+        #
+        
 
     def update(self, dt):
         self.map.handle_boosters(self)
@@ -59,8 +66,15 @@ class Car(pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
 
     def move(self, dt):
-
         pressed = pg.key.get_pressed()
+        if pressed[pg.K_SPACE]:
+            if self.nitro_dur > 0:
+                self.nitro_acc()
+                self.nitro_dur -= 1
+            else:
+                self.nitro_dur = min(self.nitro_dur + self.nitro_restore, self.nitro_cap)
+        else:
+            self.nitro_dur = min(self.nitro_dur + self.nitro_restore, self.nitro_cap)
         if pressed[pg.K_UP]:
             self.accelerate(dt)
         if pressed[pg.K_DOWN]:
@@ -111,3 +125,6 @@ class Car(pg.sprite.Sprite):
 
     def decelerate(self, dt):
         self.speed -= self.engine / (2 * dt)
+        
+    def nitro_acc(self):
+        self.speed += self.nitro_pow

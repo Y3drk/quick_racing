@@ -12,6 +12,22 @@ from booster import Booster
 from boosterType import BoosterType
 from CSVParser import CSVParser
 
+class NitroBar():
+    def __init__(self, x, y, w, h, bg_color, color, font):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.bg_color = bg_color
+        self.color = color
+        self.bg_rect = pg.Rect(x, y, w, h)
+        self.font = font
+    def draw(self, surf, val, cap):
+        pg.draw.rect(surf, self.bg_color, self.bg_rect)
+        rect = pg.Rect(self.x+5, self.y+5, int((self.w-10)*max(val/cap, 0)), self.h-10)
+        pg.draw.rect(surf, self.color, rect)
+        nitro_text = self.font.render("NITRO", 1, (0,0,0))
+        surf.blit(nitro_text, nitro_text.get_rect(center = self.bg_rect.center))
 
 class Engine:
     def __init__(self, refresh_rate, name, car, map):
@@ -24,9 +40,9 @@ class Engine:
         self.player_name = name
         self.car = car
         self.map = map
+        self.nitro_bar = NitroBar(5, 5, 250, 40, (240,230,140), (100,100,255), pg.font.SysFont('Calibri', 35))
 
     def spawn_booster(self, map: Map, dt):
-
         if random.randrange(0, 256) != 8:
             return
 
@@ -99,13 +115,15 @@ class Engine:
             curr_map.all_boosters.draw(self.screen)
             curr_map.all_boosters.update()
 
+            self.nitro_bar.draw(self.screen, car.nitro_dur, car.nitro_cap)
+            
             car.move(dt)
             car.update(dt)
 
             self.screen.blit(car.image, (car.position.x, car.position.y))
 
-            print(car.boosters)
-            print("------------")
+            #print(car.boosters)
+            #print("------------")
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
