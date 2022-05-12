@@ -80,6 +80,10 @@ class Engine:
 
         map.all_boosters.add(Booster(Vector2D(x_coordinate, y_coordinate), change, new_booster_type, dt))
 
+    def display_laps(self, map):
+        out = 'laps {lp}/6'.format(lp=map.laps_completed)
+        map.font.render_to(self.screen, (1100, 40), out, pg.Color('black'))
+
     def start_timer(self):
         stopwatch = Stopwatch(self.screen, self.clock, Vector2D(1300, 40))
         stopwatch.restart_timer(pg.time.get_ticks())
@@ -121,6 +125,8 @@ class Engine:
             car.update(dt)
 
             self.screen.blit(car.image, (car.position.x, car.position.y))
+
+            self.display_laps(curr_map)
 
             #print(car.boosters)
             #print("------------")

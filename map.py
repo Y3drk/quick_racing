@@ -23,6 +23,10 @@ class Map:
         self.checkpoints = []
         self.placement = 0
 
+        self.font = pg.freetype.SysFont(None, 34)
+        self.font.origin = True
+        self.laps_completed = 0
+
     def place_objects(self):
         parser = CSVParser("./data/" + self.name + ".csv", "./data/Leaderboard.csv", None)
         parser.draw_map(self)
@@ -128,6 +132,8 @@ class Map:
     #         best_spot = "bottom right"
     #
     #     return Vector2D(best_x, best_y),best_spot
+    def increment_laps(self):
+        self.laps_completed += 1
 
     def handle_collision_with_walls(self, car):
         if car.boosters["transparent"][0]:
@@ -158,6 +164,8 @@ class Map:
 
                         for slide in self.all_surfaces:
                             slide.checked = False
+
+                        self.increment_laps()
 
                 if slide.type == "CHECKPOINT":
                     if self.placement <= len(self.checkpoints) - 1 and self.checkpoints[
