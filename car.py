@@ -23,9 +23,10 @@ class Car(pg.sprite.Sprite):
         self.engine = engine
         self.map = curr_map
 
-        # dict of all boosters instead of this
         self.boosters = {"transparent": [False, 0], "speed": [0, 0], "noTurning": [False, 0],
                          "turning": [0, 0], "freeze": [False, 0]}
+
+        self.collision_facilitator = [False, 0]
 
         self.mask = pg.mask.from_surface(self.image)
         
@@ -34,11 +35,12 @@ class Car(pg.sprite.Sprite):
         self.nitro_cap = 60 #capacity
         self.nitro_dur = 40 #duration
         self.nitro_restore = 0.2 #restoration speed
-        #
-        
 
     def update(self, dt):
         self.map.handle_boosters(self)
+        self.handle_collision_facilitator()
+
+        print("speed b4 everything: ", self.speed)
 
         if self.boosters["freeze"][0]:
             self.speed = 0
@@ -48,14 +50,20 @@ class Car(pg.sprite.Sprite):
             if not collision_test_result:
                 self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
             else:
-                if self.speed + self.boosters["speed"][0] > 0:
-                    self.position.subtract((self.speed + self.boosters["speed"][0] + 4) * cos(radians(self.direction)),
-                                           (self.speed + self.boosters["speed"][0] + 4) * sin(radians(self.direction)))
+                if self.speed * (1 + self.boosters["speed"][0]) > 0:
+                    self.position.subtract((self.speed * (1 + self.boosters["speed"][0]) + 6) * cos(radians(self.direction)),
+                                           (self.speed * (1 + self.boosters["speed"][0]) + 6) * sin(radians(self.direction)))
                 else:
-                    self.position.add((self.speed + self.boosters["speed"][0] + 2) * cos(radians(self.direction)),
-                                      (self.speed + self.boosters["speed"][0] + 2) * sin(radians(self.direction)))
+                    self.position.add((self.speed * (1 + self.boosters["speed"][0]) + 8) * cos(radians(self.direction)),
+                                      (self.speed * (1 + self.boosters["speed"][0]) + 8) * sin(radians(self.direction)))
 
-                self.speed = -(self.speed + self.boosters["speed"][0]) * 0.15
+                self.speed = -(self.speed * (1 + self.boosters["speed"][0])) * 0.05
+
+                self.collision_facilitator = [True, pg.time.get_ticks() * 8]
+
+                print("Speed after collision: ", self.speed)
+                print("_-----------------------_")
+
 
             new_traction = self.map.handle_collision_with_sufraces(self)
             self.map.handle_collision_with_boosters(self)
@@ -75,9 +83,9 @@ class Car(pg.sprite.Sprite):
                 self.nitro_dur = min(self.nitro_dur + self.nitro_restore, self.nitro_cap)
         else:
             self.nitro_dur = min(self.nitro_dur + self.nitro_restore, self.nitro_cap)
-        if pressed[pg.K_UP]:
+        if not self.collision_facilitator[0] and pressed[pg.K_UP]:
             self.accelerate(dt)
-        if pressed[pg.K_DOWN]:
+        if not self.collision_facilitator[0] and pressed[pg.K_DOWN]:
             self.decelerate(dt)
         if not self.boosters["noTurning"][0]:
             if pressed[pg.K_LEFT]:
@@ -87,15 +95,14 @@ class Car(pg.sprite.Sprite):
 
         if self.speed > 0:
             # print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= (self.speed + self.boosters["speed"][0]) * (0.1 + (self.speed + self.boosters["speed"][
-                0]) * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
+            self.speed -= (self.speed * (1 + self.boosters["speed"][0])) * (0.1 + (self.speed * (1 + self.boosters["speed"][0])) * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
         elif self.speed < 0:
-            self.speed += (self.speed + self.boosters["speed"][0]) * (
-                        0.03 + (self.speed + self.boosters["speed"][0]) * 0.05)  # v drogi i v*v powietrza
+            self.speed += (self.speed * (1 + self.boosters["speed"][0])) * (
+                        0.03 + (self.speed * (1 + self.boosters["speed"][0])) * 0.05)  # v drogi i v*v powietrza
 
     def rotate_left(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction - (6 + self.boosters["turning"][0]) * (self.speed + self.boosters["speed"][0]) * self.rotation / (
+            self.direction = (self.direction - (6 + self.boosters["turning"][0]) * (self.speed * (1 + self.boosters["speed"][0])) * self.rotation / (
                         dt ** 2)) % 360
 
             if self.direction < 0:
@@ -108,7 +115,7 @@ class Car(pg.sprite.Sprite):
 
     def rotate_right(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction + (6 + self.boosters["turning"][0]) * (self.speed + self.boosters["speed"][0]) * self.rotation / (
+            self.direction = (self.direction + (6 + self.boosters["turning"][0]) * (self.speed * (1 + self.boosters["speed"][0])) * self.rotation / (
                         dt ** 2)) % 360
             if self.direction > 360:
                 self.direction -= 360
@@ -128,3 +135,9 @@ class Car(pg.sprite.Sprite):
         
     def nitro_acc(self):
         self.speed += self.nitro_pow
+
+    def handle_collision_facilitator(self):
+        self.collision_facilitator[1] -= pg.time.get_ticks()
+        if self.collision_facilitator[1] <= 0:
+            self.collision_facilitator[0] = False
+            self.collision_facilitator[1] = 0
