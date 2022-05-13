@@ -134,7 +134,7 @@ class Car(pg.sprite.Sprite):
         self.speed -= self.engine / (2 * dt)
         
     def nitro_acc(self):
-        self.speed += self.nitro_pow
+        self.speed += self.nitro_pow * (lambda x: 1 if x >= 0 else -1)(self.speed)
 
     def handle_collision_facilitator(self):
         self.collision_facilitator[1] -= pg.time.get_ticks()
