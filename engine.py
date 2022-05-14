@@ -12,6 +12,26 @@ from booster import Booster
 from boosterType import BoosterType
 from CSVParser import CSVParser
 
+class Results:
+    def __init__(self, x, y, w, h, bg_color, color, font):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.bg_color = bg_color
+        self.color = color
+        self.font = font
+        self.bg_rect = pg.Rect(x,y,w,h)
+        self.finished_rect = pg.Rect(x + 10, y + 10, w - 20, 40)
+    def draw(self, surf, times):
+        pg.draw.rect(surf, self.bg_color, self.bg_rect)
+        pg.draw.rect(surf, self.color, self.finished_rect)
+        finished = self.font.render("FINISHED!", 1, (0,0,0))
+        surf.blit(finished, finished.get_rect(center=self.finished_rect.center))
+        results = [pg.Rect(self.x + 10, self.y + 80 + 50 * i, self.w - 20, 40) for i in range(6)]
+        for i in range(6):
+            t = self.font.render(times[i], 1, (0,0,0))
+            surf.blit(t, t.get_rect(center=results[i].center))
 
 class NitroBar():
     def __init__(self, x, y, w, h, bg_color, color, font):
@@ -31,7 +51,6 @@ class NitroBar():
         nitro_text = self.font.render("NITRO", 1, (0, 0, 0))
         surf.blit(nitro_text, nitro_text.get_rect(center=self.bg_rect.center))
 
-
 class Engine:
     def __init__(self, refresh_rate, name, car, map):
         self.refresh = refresh_rate
@@ -44,7 +63,8 @@ class Engine:
         self.car = car
         self.map = map
         self.nitro_bar = NitroBar(5, 5, 250, 40, (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35))
-
+        self.results_popup = Results(1480//2-300//2, 780//2-400//2, 300, 400,  (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35))
+        
     def spawn_booster(self, map: Map, dt):
         if random.randrange(0, 256) != 8:
             return
@@ -137,5 +157,8 @@ class Engine:
 
             ticks = pg.time.get_ticks()
             stopwatch.display_timer(ticks)
+            
+            if curr_map.won == 1:
+                self.results_popup.draw(self.screen, curr_map.times)
 
             pg.display.flip()

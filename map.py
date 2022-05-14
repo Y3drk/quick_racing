@@ -7,7 +7,6 @@ from surface import Surface
 
 from math import sin, cos, radians
 
-
 class Map:
     def __init__(self, id, width, height, stopwatch, player_name):
         self.id = id
@@ -26,6 +25,9 @@ class Map:
         self.font = pg.freetype.SysFont(None, 34)
         self.font.origin = True
         self.laps_completed = 0
+        
+        self.times = []
+        self.won = 0
 
     def place_objects(self):
         parser = CSVParser("./data/" + self.name + ".csv", "./data/Leaderboard.csv", None)
@@ -152,21 +154,27 @@ class Map:
             for slide in slides:
                 if slide.type == "FINISHLINE":
                     if False not in self.checkpoints:  # int(self.stopwatch.get_time(pg.time.get_ticks()) / 1000 % 60) > 5: #placeholder: if at least 5 secs
-                        with open("./data/Records.csv", "a") as f:
-                            f.write("\n{},{},{},{}".format(car.name, self.name,
-                                                           self.stopwatch.get_time(pg.time.get_ticks()),
-                                                           self.player_name))
-                        self.stopwatch.restart_timer(pg.time.get_ticks())
-                        self.placement = 0
+                        if self.won == 0:
+                            self.times.append(self.stopwatch.get_time(pg.time.get_ticks()))
+                            
+                            with open("./data/Records.csv", "a") as f:
+                                f.write("\n{},{},{},{}".format(car.name, self.name,
+                                                                self.stopwatch.get_time(pg.time.get_ticks()),
+                                                                self.player_name))
+                            self.stopwatch.restart_timer(pg.time.get_ticks())
+                            self.placement = 0
+                            
+                            for i in range(0, len(self.checkpoints)):
+                                self.checkpoints[i] = False
 
-                        for i in range(0, len(self.checkpoints)):
-                            self.checkpoints[i] = False
+                            for slide in self.all_surfaces:
+                                slide.checked = False
 
-                        for slide in self.all_surfaces:
-                            slide.checked = False
-
-                        self.increment_laps()
-
+                            self.increment_laps()
+                        if self.laps_completed == 1:
+                            self.won = 1
+                            self.times = ["{minutes:02d}.{seconds:02d}.{millis}".format(minutes=int(self.times[0] / 60000 % 24), millis=self.times[0] % 1000, seconds=int(self.times[0] / 1000 % 60)) for i in range(6)]
+                            
                 if slide.type == "CHECKPOINT":
                     if self.placement <= len(self.checkpoints) - 1 and self.checkpoints[
                         self.placement] == False and slide.checked == False:
