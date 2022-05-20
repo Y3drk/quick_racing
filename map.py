@@ -173,7 +173,7 @@ class Map:
                             self.increment_laps()
                         if self.laps_completed == 6:
                             self.won = 1
-                            self.times = ["{minutes:02d}.{seconds:02d}.{millis}".format(minutes=int(self.times[0] / 60000 % 24), millis=self.times[0] % 1000, seconds=int(self.times[0] / 1000 % 60)) for i in range(6)]
+                            self.times = ["{minutes:02d}.{seconds:02d}.{millis}".format(minutes=int(self.times[i] / 60000 % 24), millis=self.times[i] % 1000, seconds=int(self.times[i] / 1000 % 60)) for i in range(6)]
                             
                 if slide.type == "CHECKPOINT":
                     if self.placement <= len(self.checkpoints) - 1 and self.checkpoints[

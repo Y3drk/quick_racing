@@ -34,7 +34,7 @@ class Results:
         pg.draw.rect(surf, self.color, self.finished_rect)
         finished = self.font.render("FINISHED!", 1, (0,0,0))
         surf.blit(finished, finished.get_rect(center=self.finished_rect.center))
-        results = [pg.Rect(self.x + 10, self.y + 80 + 50 * i, self.w - 20, 40) for i in range(6)]
+        results = [pg.Rect(self.x + 10, self.y + 60 + 50 * i, self.w - 20, 40) for i in range(6)]
         for i in range(6):
             t = self.font.render(times[i], 1, (0,0,0))
             surf.blit(t, t.get_rect(center=results[i].center))
