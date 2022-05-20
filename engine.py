@@ -13,7 +13,7 @@ from boosterType import BoosterType
 from CSVParser import CSVParser
 
 class Results:
-    def __init__(self, x, y, w, h, bg_color, color, font):
+    def __init__(self, x, y, w, h, bg_color, color, font, button_font):
         self.x = x
         self.y = y
         self.w = w
@@ -21,9 +21,15 @@ class Results:
         self.bg_color = bg_color
         self.color = color
         self.font = font
+        self.button_font = button_font
         self.bg_rect = pg.Rect(x,y,w,h)
         self.finished_rect = pg.Rect(x + 10, y + 10, w - 20, 40)
-    def draw(self, surf, times):
+        self.return_to_menu_rect = pg.Rect(x + 10, y + h - 30, w//2 - 20, 25)
+        self.restart_rect = pg.Rect(x + w//2 + 10, y + h - 30, w//2 - 20, 25)
+        self.return_text_rect = pg.Rect(x + 10, y + h - 30, w//2 - 20, 25)
+        self.restart_text_rect = pg.Rect(x + w//2 + 10, y + h - 30, w//2 - 20, 25)
+        
+    def draw(self, surf, times, pressed):
         pg.draw.rect(surf, self.bg_color, self.bg_rect)
         pg.draw.rect(surf, self.color, self.finished_rect)
         finished = self.font.render("FINISHED!", 1, (0,0,0))
@@ -32,6 +38,30 @@ class Results:
         for i in range(6):
             t = self.font.render(times[i], 1, (0,0,0))
             surf.blit(t, t.get_rect(center=results[i].center))
+        
+        return_button = pg.draw.rect(surf, self.color, self.return_to_menu_rect)
+        restart_button = pg.draw.rect(surf, self.color, self.restart_rect)
+        return_text = self.button_font.render("Return",1,(0,0,0))
+        restart_text = self.button_font.render("Restart",1,(0,0,0))
+        surf.blit(return_text, return_text.get_rect(center = self.return_text_rect.center))
+        surf.blit(restart_text, restart_text.get_rect(center = self.restart_text_rect.center))
+        if return_button.collidepoint(pg.mouse.get_pos()):
+            return_color = (240,230,140)
+            if pressed:
+                return 0
+        else:
+            return_color = (100,200,255)
+            
+        if restart_button.collidepoint(pg.mouse.get_pos()):
+            restart_color = (240,230,140)
+            if pressed:
+                return 1
+        else:
+            restart_color = (100,200,255)
+            
+        pg.draw.rect(return_text, return_color, [self.x + 10, self.y + self.h - 30, self.w//2 - 20, 25])
+        pg.draw.rect(restart_text, restart_color, [self.x + self.w//2 + 10, self.y + self.h - 30, self.w//2 - 20, 25])
+        return 2
 
 class NitroBar():
     def __init__(self, x, y, w, h, bg_color, color, font):
@@ -63,7 +93,7 @@ class Engine:
         self.car = car
         self.map = map
         self.nitro_bar = NitroBar(5, 5, 250, 40, (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35))
-        self.results_popup = Results(1480//2-300//2, 780//2-400//2, 300, 400,  (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35))
+        self.results_popup = Results(1480//2-300//2, 780//2-400//2, 300, 400, (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35), pg.font.SysFont('Calibri', 25))
         
     def spawn_booster(self, map: Map, dt):
         if random.randrange(0, 256) != 8:
@@ -126,7 +156,6 @@ class Engine:
 
         id, name, engine = CSVParser(None, None, "./data/Cars.csv").read_car_statistics(self.car)
         car = Car(id, Vector2D(50, 100), 0, 0, 10, engine, name, curr_map)
-
         while run:
             dt = self.clock.tick(self.refresh)
             self.screen.blit(map_img, (0, 0))
@@ -151,14 +180,21 @@ class Engine:
 
             self.display_laps(curr_map)
 
+            pressed = False
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     run = False
+                elif event.type == pg.MOUSEBUTTONDOWN:
+                    pressed = True
 
             ticks = pg.time.get_ticks()
             stopwatch.display_timer(ticks)
             
             if curr_map.won == 1:
-                self.results_popup.draw(self.screen, curr_map.times)
-
+                r = self.results_popup.draw(self.screen, curr_map.times, pressed)
+                if r < 2:
+                    run = 0
+                    self.run()
+                    
             pg.display.flip()
+        pg.display.set_mode((1080, 720))

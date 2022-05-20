@@ -57,8 +57,9 @@ class Menu:
                     if pos == 0: #play button
                         name, car, map = self.settings.get_settings()
                         engine = Engine(60, name, car, map)
-                        engine.run()
                         run = False
+                        engine.run()
+                        run = True
                     if pos == 1: #leaderboard button
                         leaderboard = Leaderboard()
                         run = False

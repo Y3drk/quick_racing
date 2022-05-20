@@ -40,7 +40,7 @@ class Car(pg.sprite.Sprite):
         self.map.handle_boosters(self)
         self.handle_collision_facilitator()
 
-        print("speed b4 everything: ", self.speed)
+        #print("speed b4 everything: ", self.speed)
 
         if self.boosters["freeze"][0]:
             self.speed = 0
@@ -61,8 +61,8 @@ class Car(pg.sprite.Sprite):
 
                 self.collision_facilitator = [True, pg.time.get_ticks() * 8]
 
-                print("Speed after collision: ", self.speed)
-                print("_-----------------------_")
+                #print("Speed after collision: ", self.speed)
+                #print("_-----------------------_")
 
 
             new_traction = self.map.handle_collision_with_sufraces(self)

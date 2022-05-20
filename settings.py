@@ -88,7 +88,6 @@ class Settings:
             self.cars_options.draw(self.screen)
             self.maps_options.draw(self.screen)
             
-            
             if self.save_button.collidepoint(pg.mouse.get_pos()):
                 color = (100,100,255)
             else:
