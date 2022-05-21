@@ -41,7 +41,7 @@ class Results:
         
         return_button = pg.draw.rect(surf, self.color, self.return_to_menu_rect)
         restart_button = pg.draw.rect(surf, self.color, self.restart_rect)
-        return_text = self.button_font.render("Return",1,(0,0,0))
+        return_text = self.button_font.render("To menu",1,(0,0,0))
         restart_text = self.button_font.render("Restart",1,(0,0,0))
         surf.blit(return_text, return_text.get_rect(center = self.return_text_rect.center))
         surf.blit(restart_text, restart_text.get_rect(center = self.restart_text_rect.center))
@@ -192,8 +192,9 @@ class Engine:
             
             if curr_map.won == 1:
                 r = self.results_popup.draw(self.screen, curr_map.times, pressed)
-                if r < 2:
-                    run = 0
+                if r == 0:
+                    run = False
+                elif r == 1:
                     self.run()
                     
             pg.display.flip()

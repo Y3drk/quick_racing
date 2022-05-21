@@ -6,6 +6,13 @@ WHITE = (255, 255, 255)
 
 
 class Car(pg.sprite.Sprite):
+    AIR_RESISTANCE = 0.05
+    TURNING_CAPABILITY = 6
+    FRONT_BOUNCE = 6
+    BACK_BOUNCE = 8
+    FRONT_BASE_ACC = 0.1
+    BACK_BASE_ACC = 0.03
+
     def __init__(self, id, position, speed, direction, rotation, engine, name, curr_map: Map):
         pg.sprite.Sprite.__init__(self)
         self.id = id
@@ -51,13 +58,13 @@ class Car(pg.sprite.Sprite):
                 self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
             else:
                 if self.speed * (1 + self.boosters["speed"][0]) > 0:
-                    self.position.subtract((self.speed * (1 + self.boosters["speed"][0]) + 6) * cos(radians(self.direction)),
-                                           (self.speed * (1 + self.boosters["speed"][0]) + 6) * sin(radians(self.direction)))
+                    self.position.subtract((self.speed * (1 + self.boosters["speed"][0]) + Car.FRONT_BOUNCE) * cos(radians(self.direction)),
+                                           (self.speed * (1 + self.boosters["speed"][0]) + Car.FRONT_BOUNCE) * sin(radians(self.direction)))
                 else:
-                    self.position.add((self.speed * (1 + self.boosters["speed"][0]) + 8) * cos(radians(self.direction)),
-                                      (self.speed * (1 + self.boosters["speed"][0]) + 8) * sin(radians(self.direction)))
+                    self.position.add((self.speed * (1 + self.boosters["speed"][0]) + Car.BACK_BOUNCE) * cos(radians(self.direction)),
+                                      (self.speed * (1 + self.boosters["speed"][0]) + Car.BACK_BOUNCE) * sin(radians(self.direction)))
 
-                self.speed = -(self.speed * (1 + self.boosters["speed"][0])) * 0.05
+                self.speed = -(self.speed * (1 + self.boosters["speed"][0])) * Car.AIR_RESISTANCE
 
                 self.collision_facilitator = [True, pg.time.get_ticks() * 8]
 
@@ -95,14 +102,14 @@ class Car(pg.sprite.Sprite):
 
         if self.speed > 0:
             # print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= (self.speed * (1 + self.boosters["speed"][0])) * (0.1 + (self.speed * (1 + self.boosters["speed"][0])) * 0.01)  # v drogi i v*v powietrza //static variables -NEEDED!
+            self.speed -= (self.speed * (1 + self.boosters["speed"][0])) * (Car.FRONT_BASE_ACC + (self.speed * (1 + self.boosters["speed"][0])) * 0.2 * Car.AIR_RESISTANCE)  # v drogi i v*v powietrza //static variables -NEEDED!
         elif self.speed < 0:
             self.speed += (self.speed * (1 + self.boosters["speed"][0])) * (
-                        0.03 + (self.speed * (1 + self.boosters["speed"][0])) * 0.05)  # v drogi i v*v powietrza
+                        Car.BACK_BASE_ACC + (self.speed * (1 + self.boosters["speed"][0])) * Car.AIR_RESISTANCE)  # v drogi i v*v powietrza
 
     def rotate_left(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction - (6 + self.boosters["turning"][0]) * (self.speed * (1 + self.boosters["speed"][0])) * self.rotation / (
+            self.direction = (self.direction - (Car.TURNING_CAPABILITY + self.boosters["turning"][0]) * (self.speed * (1 + self.boosters["speed"][0])) * self.rotation / (
                         dt ** 2)) % 360
 
             if self.direction < 0:
@@ -115,7 +122,7 @@ class Car(pg.sprite.Sprite):
 
     def rotate_right(self, dt):
         if self.speed != 0:
-            self.direction = (self.direction + (6 + self.boosters["turning"][0]) * (self.speed * (1 + self.boosters["speed"][0])) * self.rotation / (
+            self.direction = (self.direction + (Car.TURNING_CAPABILITY + self.boosters["turning"][0]) * (self.speed * (1 + self.boosters["speed"][0])) * self.rotation / (
                         dt ** 2)) % 360
             if self.direction > 360:
                 self.direction -= 360
