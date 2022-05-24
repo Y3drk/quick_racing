@@ -1,9 +1,7 @@
 from __future__ import annotations
 import pygame as pg
 
-from CSVParser import CSVParser
-from surfaceType import SurfaceType
-from surface import Surface
+from enums_and_parser.CSVParser import CSVParser
 
 from math import sin, cos, radians
 
@@ -157,7 +155,7 @@ class Map:
                         if self.won == 0:
                             self.times.append(self.stopwatch.get_time(pg.time.get_ticks()))
                             
-                            with open("./data/Records.csv", "a") as f:
+                            with open("../data/Records.csv", "a") as f:
                                 f.write("\n{},{},{},{}".format(car.name, self.name,
                                                                 self.stopwatch.get_time(pg.time.get_ticks()),
                                                                 self.player_name))

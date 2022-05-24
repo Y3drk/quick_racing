@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pygame as pg
-from vector2d import Vector2D
-from surfaceType import SurfaceType
+from back_elements.vector2d import Vector2D
+from enums_and_parser.surfaceType import SurfaceType
 
 
 class Surface(pg.sprite.Sprite):

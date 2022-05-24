@@ -1,5 +1,5 @@
 import pygame as pg
-from map import Map
+from back_elements.map import Map
 from math import sin, cos, radians
 
 WHITE = (255, 255, 255)
@@ -102,7 +102,7 @@ class Car(pg.sprite.Sprite):
 
         if self.speed > 0:
             # print(self.speed, self.speed * (0.1 + self.speed * 0.01))
-            self.speed -= (self.speed * (1 + self.boosters["speed"][0])) * (Car.FRONT_BASE_ACC + (self.speed * (1 + self.boosters["speed"][0])) * 0.2 * Car.AIR_RESISTANCE)  # v drogi i v*v powietrza //static variables -NEEDED!
+            self.speed -= (self.speed * (1 + self.boosters["speed"][0])) * (Car.FRONT_BASE_ACC + (self.speed * (1 + self.boosters["speed"][0])) * 0.15 * Car.AIR_RESISTANCE)  # v drogi i v*v powietrza //static variables -NEEDED!
         elif self.speed < 0:
             self.speed += (self.speed * (1 + self.boosters["speed"][0])) * (
                         Car.BACK_BASE_ACC + (self.speed * (1 + self.boosters["speed"][0])) * Car.AIR_RESISTANCE)  # v drogi i v*v powietrza

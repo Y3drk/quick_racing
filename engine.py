@@ -4,13 +4,13 @@ import random
 
 import pygame as pg
 
-from vector2d import Vector2D
-from car import Car
-from map import Map
-from stopwatch import Stopwatch
-from booster import Booster
-from boosterType import BoosterType
-from CSVParser import CSVParser
+from back_elements.vector2d import Vector2D
+from back_elements.car import Car
+from back_elements.map import Map
+from back_elements.stopwatch import Stopwatch
+from back_elements.booster import Booster
+from enums_and_parser.boosterType import BoosterType
+from enums_and_parser.CSVParser import CSVParser
 
 class Results:
     def __init__(self, x, y, w, h, bg_color, color, font, button_font):

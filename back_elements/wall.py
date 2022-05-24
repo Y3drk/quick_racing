@@ -1,5 +1,5 @@
 import pygame as pg
-from vector2d import Vector2D
+from back_elements.vector2d import Vector2D
 from math import sqrt, acos
 
 
@@ -9,7 +9,7 @@ class Wall(pg.sprite.Sprite):
         self.image = pg.Surface((width, height))
 
         if with_tires:
-            self.image = pg.image.load("./data/tirewall.png").convert()
+            self.image = pg.image.load("data/tirewall.png").convert()
             self.image.set_colorkey((0, 0, 0))
             self.image = pg.transform.rotate(self.image, rotation)
 

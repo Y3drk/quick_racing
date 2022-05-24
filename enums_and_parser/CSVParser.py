@@ -1,9 +1,9 @@
 
-from wall import Wall
-from surface import Surface
-from surfaceType import SurfaceType
+from back_elements.wall import Wall
+from back_elements.surface import Surface
+from enums_and_parser.surfaceType import SurfaceType
 import csv
-from vector2d import Vector2D
+from back_elements.vector2d import Vector2D
 
 
 class CSVParser:

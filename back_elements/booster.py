@@ -1,9 +1,9 @@
 from __future__ import annotations
 import pygame as pg
-from vector2d import Vector2D
-from car import Car
-from boosterType import BoosterType
-from stopwatch import Stopwatch
+from back_elements.vector2d import Vector2D
+from back_elements.car import Car
+from enums_and_parser.boosterType import BoosterType
+from back_elements.stopwatch import Stopwatch
 
 
 class Booster(pg.sprite.Sprite):

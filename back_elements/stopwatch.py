@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pygame as pg
-from vector2d import Vector2D
+from back_elements.vector2d import Vector2D
 
 class Stopwatch (pg.sprite.Sprite):
     def __init__(self, screen, clock, position: Vector2D):

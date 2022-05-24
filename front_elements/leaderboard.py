@@ -72,7 +72,7 @@ class Leaderboard:
 		pg.display.set_caption("QUICK RACING")
 		
 	def run(self):
-		background = pg.image.load("./data/leaderboard_bg.png")
+		background = pg.image.load("data/leaderboard_bg.png")
 		background = pg.transform.scale(background, (self.width, self.height))
 		records = self.get_leaderboard()
 		quit_color = (100, 200, 255)
@@ -127,7 +127,7 @@ class Leaderboard:
 
 	def get_leaderboard(self):
 		records = []
-		with open("./data/Records.csv", "r") as f:
+		with open("data/Records.csv", "r") as f:
 			reader = csv.reader(f)
 			for row in reader:
 				if row[0] == "car 1":

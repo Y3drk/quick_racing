@@ -70,7 +70,7 @@ class Settings:
     def get_settings(self):
         return self.name, self.car, self.map
     def run(self):
-        background = pg.image.load("./data/settings_bg.png")
+        background = pg.image.load("data/settings_bg.png")
         background = pg.transform.scale(background, (self.width, self.height))
         run = True
         while run:
