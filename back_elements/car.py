@@ -54,25 +54,29 @@ class Car(pg.sprite.Sprite):
         else:
             collision_test_result = self.map.handle_collision_with_walls(self)
 
-            if not collision_test_result:
+            if not collision_test_result[1]:
                 self.position.add(self.speed * cos(radians(self.direction)), self.speed * sin(radians(self.direction)))
             else:
-                if self.speed * (1 + self.boosters["speed"][0]) > 0:
-                    self.position.subtract((self.speed * (1 + self.boosters["speed"][0]) + Car.FRONT_BOUNCE) * cos(radians(self.direction)),
-                                           (self.speed * (1 + self.boosters["speed"][0]) + Car.FRONT_BOUNCE) * sin(radians(self.direction)))
+                if collision_test_result[0] == "other":
+                    if self.speed * (1 + self.boosters["speed"][0]) > 0:
+                        self.position.subtract((self.speed * (1 + self.boosters["speed"][0]) + Car.FRONT_BOUNCE) * cos(radians(self.direction)),
+                                               (self.speed * (1 + self.boosters["speed"][0]) + Car.FRONT_BOUNCE) * sin(radians(self.direction)))
+                    else:
+                        self.position.add((self.speed * (1 + self.boosters["speed"][0]) + Car.BACK_BOUNCE) * cos(radians(self.direction)),
+                                          (self.speed * (1 + self.boosters["speed"][0]) + Car.BACK_BOUNCE) * sin(radians(self.direction)))
+
+                    self.speed = -(self.speed * (1 + self.boosters["speed"][0])) * Car.AIR_RESISTANCE
+
+                    self.collision_facilitator = [True, pg.time.get_ticks() * 8]
+
                 else:
-                    self.position.add((self.speed * (1 + self.boosters["speed"][0]) + Car.BACK_BOUNCE) * cos(radians(self.direction)),
-                                      (self.speed * (1 + self.boosters["speed"][0]) + Car.BACK_BOUNCE) * sin(radians(self.direction)))
-
-                self.speed = -(self.speed * (1 + self.boosters["speed"][0])) * Car.AIR_RESISTANCE
-
-                self.collision_facilitator = [True, pg.time.get_ticks() * 8]
+                    self.boosters["transparent"] = [True, pg.time.get_ticks() * 40]
 
                 #print("Speed after collision: ", self.speed)
                 #print("_-----------------------_")
 
 
-            new_traction = self.map.handle_collision_with_sufraces(self)
+            new_traction = self.map.handle_collision_with_surfaces(self)
             self.map.handle_collision_with_boosters(self)
 
         self.rect = self.image.get_rect()
