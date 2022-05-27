@@ -109,7 +109,7 @@ class Engine:
 
         if what_booster == 0:
             new_booster_type = BoosterType.SPEED
-            change = random.uniform(-0.95, 1.00)
+            change = random.uniform(-0.95, .5)
 
         elif what_booster == 1:
             new_booster_type = BoosterType.TURNING
