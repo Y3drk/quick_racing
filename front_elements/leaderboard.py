@@ -74,7 +74,7 @@ class Leaderboard:
 	def run(self):
 		background = pg.image.load("data/leaderboard_bg.png")
 		background = pg.transform.scale(background, (self.width, self.height))
-		records = self.get_leaderboard()
+		self.records = self.get_leaderboard()
 		quit_color = (100, 200, 255)
 		run = True
 		while run:
@@ -97,26 +97,26 @@ class Leaderboard:
 					self.screen.fill((0,0,0))
 				car_selected_option = self.cars_options.update(event)
 				if car_selected_option >= 0:
-					self.car = car_selected_option				
-					records = self.get_leaderboard()
+					self.car = car_selected_option			
+					self.records = self.get_leaderboard()
 				map_selected_option = self.maps_options.update(event)
 				if map_selected_option >= 0:
 					self.map = map_selected_option
-					records = self.get_leaderboard()
+					self.records = self.get_leaderboard()
 				if event.type == pg.QUIT:
 					run = False
 
 			for i in range(5):
 				pg.draw.rect(self.screen, (240,230,140), self.scores[i])
 				pg.draw.rect(self.screen, (0, 0, 0), self.scores[i], 2)
-				if len(records) <= i:
+				if len(self.records) <= i:
 					msg = self.font.render("-", 1, (0, 0, 0))
 				else:
-					millis = records[i][2] % 1000
-					seconds = int(records[i][2] / 1000 % 60)
-					minutes = int(records[i][2] / 60000 % 24)
+					millis = self.records[i][2] % 1000
+					seconds = int(self.records[i][2] / 1000 % 60)
+					minutes = int(self.records[i][2] / 60000 % 24)
 					t = "{minutes:02d}.{seconds:02d}.{millis}".format(minutes=minutes, millis=millis, seconds=seconds)
-					msg = self.font.render(records[i][3]+ ": " + t, 1, (0, 0, 0))
+					msg = self.font.render(self.records[i][3]+ ": " + t, 1, (0, 0, 0))
 				self.screen.blit(msg, msg.get_rect(center = self.scores[i].center))
 
 			pg.display.update()
@@ -130,15 +130,15 @@ class Leaderboard:
 		with open("data/Records.csv", "r") as f:
 			reader = csv.reader(f)
 			for row in reader:
-				if row[0] == "car 1":
+				if row[0] == "supra_new":
 					car = 0
-				elif row[0] == "car 2":
+				elif row[0] == "ferrari458":
 					car = 1
 				else:
 					car = 2
-				if row[1] == "map 1":
+				if row[1] == "map1":
 					map = 0
-				elif row[1] == "map 2":
+				elif row[1] == "map2":
 					map = 1
 				else:
 					map = 2
