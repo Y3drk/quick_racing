@@ -23,7 +23,7 @@ class Surface(pg.sprite.Sprite):
         self.height = height
         self.fraction = fraction.value[0]
         self.type = fraction.name
-        self.checked = False #for checkpoints mainly
+        self.checked = False
 
         self.mask = pg.mask.from_surface(self.image)
 

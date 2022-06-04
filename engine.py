@@ -12,6 +12,7 @@ from back_elements.booster import Booster
 from enums_and_parser.boosterType import BoosterType
 from enums_and_parser.CSVParser import CSVParser
 
+
 class Results:
     def __init__(self, x, y, w, h, bg_color, color, font, button_font):
         self.x = x
@@ -22,46 +23,48 @@ class Results:
         self.color = color
         self.font = font
         self.button_font = button_font
-        self.bg_rect = pg.Rect(x,y,w,h)
+        self.bg_rect = pg.Rect(x, y, w, h)
         self.finished_rect = pg.Rect(x + 10, y + 10, w - 20, 40)
-        self.return_to_menu_rect = pg.Rect(x + 10, y + h - 30, w//2 - 20, 25)
-        self.restart_rect = pg.Rect(x + w//2 + 10, y + h - 30, w//2 - 20, 25)
-        self.return_text_rect = pg.Rect(x + 10, y + h - 30, w//2 - 20, 25)
-        self.restart_text_rect = pg.Rect(x + w//2 + 10, y + h - 30, w//2 - 20, 25)
-        
+        self.return_to_menu_rect = pg.Rect(x + 10, y + h - 30, w // 2 - 20, 25)
+        self.restart_rect = pg.Rect(x + w // 2 + 10, y + h - 30, w // 2 - 20, 25)
+        self.return_text_rect = pg.Rect(x + 10, y + h - 30, w // 2 - 20, 25)
+        self.restart_text_rect = pg.Rect(x + w // 2 + 10, y + h - 30, w // 2 - 20, 25)
+
     def draw(self, surf, times, pressed):
         pg.draw.rect(surf, self.bg_color, self.bg_rect)
         pg.draw.rect(surf, self.color, self.finished_rect)
-        finished = self.font.render("FINISHED!", 1, (0,0,0))
+        finished = self.font.render("FINISHED!", 1, (0, 0, 0))
         surf.blit(finished, finished.get_rect(center=self.finished_rect.center))
         results = [pg.Rect(self.x + 10, self.y + 60 + 50 * i, self.w - 20, 40) for i in range(6)]
         for i in range(6):
-            t = self.font.render(times[i], 1, (0,0,0))
+            t = self.font.render(times[i], 1, (0, 0, 0))
             surf.blit(t, t.get_rect(center=results[i].center))
-        
+
         return_button = pg.draw.rect(surf, self.color, self.return_to_menu_rect)
         restart_button = pg.draw.rect(surf, self.color, self.restart_rect)
-        return_text = self.button_font.render("To menu",1,(0,0,0))
-        restart_text = self.button_font.render("Restart",1,(0,0,0))
-        surf.blit(return_text, return_text.get_rect(center = self.return_text_rect.center))
-        surf.blit(restart_text, restart_text.get_rect(center = self.restart_text_rect.center))
+        return_text = self.button_font.render("To menu", 1, (0, 0, 0))
+        restart_text = self.button_font.render("Restart", 1, (0, 0, 0))
+        surf.blit(return_text, return_text.get_rect(center=self.return_text_rect.center))
+        surf.blit(restart_text, restart_text.get_rect(center=self.restart_text_rect.center))
         if return_button.collidepoint(pg.mouse.get_pos()):
-            return_color = (240,230,140)
+            return_color = (240, 230, 140)
             if pressed:
                 return 0
         else:
-            return_color = (100,200,255)
-            
+            return_color = (100, 200, 255)
+
         if restart_button.collidepoint(pg.mouse.get_pos()):
-            restart_color = (240,230,140)
+            restart_color = (240, 230, 140)
             if pressed:
                 return 1
         else:
-            restart_color = (100,200,255)
-            
-        pg.draw.rect(return_text, return_color, [self.x + 10, self.y + self.h - 30, self.w//2 - 20, 25])
-        pg.draw.rect(restart_text, restart_color, [self.x + self.w//2 + 10, self.y + self.h - 30, self.w//2 - 20, 25])
+            restart_color = (100, 200, 255)
+
+        pg.draw.rect(return_text, return_color, [self.x + 10, self.y + self.h - 30, self.w // 2 - 20, 25])
+        pg.draw.rect(restart_text, restart_color,
+                     [self.x + self.w // 2 + 10, self.y + self.h - 30, self.w // 2 - 20, 25])
         return 2
+
 
 class NitroBar():
     def __init__(self, x, y, w, h, bg_color, color, font):
@@ -81,6 +84,7 @@ class NitroBar():
         nitro_text = self.font.render("NITRO", 1, (0, 0, 0))
         surf.blit(nitro_text, nitro_text.get_rect(center=self.bg_rect.center))
 
+
 class Engine:
     def __init__(self, refresh_rate, name, car, map):
         self.refresh = refresh_rate
@@ -93,8 +97,9 @@ class Engine:
         self.car = car
         self.map = map
         self.nitro_bar = NitroBar(5, 5, 250, 40, (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35))
-        self.results_popup = Results(1480//2-300//2, 780//2-400//2, 300, 400, (240, 230, 140), (100, 100, 255), pg.font.SysFont('Calibri', 35), pg.font.SysFont('Calibri', 25))
-        
+        self.results_popup = Results(1480 // 2 - 300 // 2, 780 // 2 - 400 // 2, 300, 400, (240, 230, 140),
+                                     (100, 100, 255), pg.font.SysFont('Calibri', 35), pg.font.SysFont('Calibri', 25))
+
     def spawn_booster(self, map: Map, dt):
         if random.randrange(0, 256) != 8:
             return
@@ -143,7 +148,6 @@ class Engine:
         return stopwatch
 
     def run(self):
-        traction = 0.15
 
         x, y = self.screen.get_size()
 
@@ -171,7 +175,7 @@ class Engine:
             curr_map.all_boosters.draw(self.screen)
             curr_map.all_boosters.update()
 
-            self.nitro_bar.draw(self.screen, car.nitro_dur, car.nitro_cap)
+            self.nitro_bar.draw(self.screen, car.nitro_duration, car.nitro_capacity)
 
             car.move(dt)
             car.update(dt)
@@ -189,13 +193,13 @@ class Engine:
 
             ticks = pg.time.get_ticks()
             stopwatch.display_timer(ticks)
-            
+
             if curr_map.won == 1:
                 r = self.results_popup.draw(self.screen, curr_map.times, pressed)
                 if r == 0:
                     run = False
                 elif r == 1:
                     self.run()
-                    
+
             pg.display.flip()
         pg.display.set_mode((1080, 720))

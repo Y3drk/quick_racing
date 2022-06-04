@@ -1,6 +1,5 @@
 import pygame as pg
 from back_elements.vector2d import Vector2D
-from math import sqrt, acos
 
 
 class Wall(pg.sprite.Sprite):
@@ -15,7 +14,7 @@ class Wall(pg.sprite.Sprite):
 
         else:
             self.image.fill((192, 192, 192))
-            self.image.set_colorkey((255, 255, 255)) #this will make the img ignore all the white pixels
+            self.image.set_colorkey((255, 255, 255))
             self.width = width
             self.height = height
 
@@ -31,16 +30,4 @@ class Wall(pg.sprite.Sprite):
         else:
             self.width = width
             self.height = height
-
-    # def get_facing(self):
-    #     x_diff = self.lower_left_corner.x - self.upper_right_corner.x
-    #     y_diff = self.lower_left_corner.y - self.upper_right_corner
-    #     r = sqrt(x_diff*x_diff + y_diff*y_diff)
-    #     angle = acos(x_diff / r) + 90
-    #     if angle < 0:
-    #         angle += 360
-    #     elif angle >= 360:
-    #         angle -= 360
-    #
-    #     return angle
     
