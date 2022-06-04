@@ -33,15 +33,15 @@ class Menu:
         run = True
         while run:
             self.screen.blit(background, (0, 0))
-            pos = self.pointing()
+            position = self.pointing()
             play_color, leaderboard_color, settings_color, quit_color = color_dark, color_dark, color_dark, color_dark
-            if pos == 0:
+            if position == 0:
                 play_color = color_light
-            elif pos == 1:
+            elif position == 1:
                 leaderboard_color = color_light
-            elif pos == 2:
+            elif position == 2:
                 settings_color = color_light
-            elif pos == 3:
+            elif position == 3:
                 quit_color = color_light
 
             pb = pg.draw.rect(self.screen, play_color, [self.width / 2 - 180, self.height / 2 - 175, 360, 80])
@@ -55,22 +55,22 @@ class Menu:
 
             for event in pg.event.get():
                 if event.type == pg.MOUSEBUTTONDOWN:
-                    if pos == 0:  # play button
+                    if position == 0:  # play button
                         name, car, map = self.settings.get_settings()
                         engine = Engine(60, name, car, map)
                         run = False
                         engine.run()
                         run = True
-                    if pos == 1:  # leaderboard button
+                    if position == 1:  # leaderboard button
                         leaderboard = Leaderboard()
                         run = False
                         leaderboard.run()
                         run = True
-                    if pos == 2:  # settings button
+                    if position == 2:  # settings button
                         run = False
                         self.settings.run()
                         run = True
-                    if pos == 3:  # quit button
+                    if position == 3:  # quit button
                         run = False
 
                 if event.type == pg.QUIT:
@@ -90,18 +90,18 @@ class Menu:
             pg.display.update()
 
     def pointing(self):
-        pos = None
+        position = None
         mouse = pg.mouse.get_pos()
         if abs(mouse[0] - self.width / 2) <= 180:
             if self.height / 2 - 175 <= mouse[1] <= self.height / 2 - 95:  # play button
-                pos = 0
+                position = 0
             elif self.height / 2 - 85 <= mouse[1] <= self.height / 2 - 5:  # leaderboard button
-                pos = 1
+                position = 1
             elif self.height / 2 + 5 <= mouse[1] <= self.height / 2 + 85:  # settings button
-                pos = 2
+                position = 2
             elif self.height / 2 + 95 <= mouse[1] <= self.height / 2 + 175:  # quit button
-                pos = 3
-        return pos
+                position = 3
+        return position
 
 
 if __name__ == "__main__":

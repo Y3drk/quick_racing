@@ -14,28 +14,28 @@ from enums_and_parser.CSVParser import CSVParser
 
 
 class Results:
-    def __init__(self, x, y, w, h, bg_color, color, font, button_font):
+    def __init__(self, x, y, width, height, background_color, color, font, button_font):
         self.x = x
         self.y = y
-        self.w = w
-        self.h = h
-        self.bg_color = bg_color
+        self.width = width
+        self.height = height
+        self.background_color = background_color
         self.color = color
         self.font = font
         self.button_font = button_font
-        self.bg_rect = pg.Rect(x, y, w, h)
-        self.finished_rect = pg.Rect(x + 10, y + 10, w - 20, 40)
-        self.return_to_menu_rect = pg.Rect(x + 10, y + h - 30, w // 2 - 20, 25)
-        self.restart_rect = pg.Rect(x + w // 2 + 10, y + h - 30, w // 2 - 20, 25)
-        self.return_text_rect = pg.Rect(x + 10, y + h - 30, w // 2 - 20, 25)
-        self.restart_text_rect = pg.Rect(x + w // 2 + 10, y + h - 30, w // 2 - 20, 25)
+        self.background_rect = pg.Rect(x, y, width, height)
+        self.finished_rect = pg.Rect(x + 10, y + 10, width - 20, 40)
+        self.return_to_menu_rect = pg.Rect(x + 10, y + height - 30, width // 2 - 20, 25)
+        self.restart_rect = pg.Rect(x + width // 2 + 10, y + height - 30, width // 2 - 20, 25)
+        self.return_text_rect = pg.Rect(x + 10, y + height - 30, width // 2 - 20, 25)
+        self.restart_text_rect = pg.Rect(x + width // 2 + 10, y + height - 30, width // 2 - 20, 25)
 
     def draw(self, surf, times, pressed):
-        pg.draw.rect(surf, self.bg_color, self.bg_rect)
+        pg.draw.rect(surf, self.background_color, self.background_rect)
         pg.draw.rect(surf, self.color, self.finished_rect)
         finished = self.font.render("FINISHED!", 1, (0, 0, 0))
         surf.blit(finished, finished.get_rect(center=self.finished_rect.center))
-        results = [pg.Rect(self.x + 10, self.y + 60 + 50 * i, self.w - 20, 40) for i in range(6)]
+        results = [pg.Rect(self.x + 10, self.y + 60 + 50 * i, self.width - 20, 40) for i in range(6)]
         for i in range(6):
             t = self.font.render(times[i], 1, (0, 0, 0))
             surf.blit(t, t.get_rect(center=results[i].center))
@@ -60,29 +60,29 @@ class Results:
         else:
             restart_color = (100, 200, 255)
 
-        pg.draw.rect(return_text, return_color, [self.x + 10, self.y + self.h - 30, self.w // 2 - 20, 25])
+        pg.draw.rect(return_text, return_color, [self.x + 10, self.y + self.height - 30, self.width // 2 - 20, 25])
         pg.draw.rect(restart_text, restart_color,
-                     [self.x + self.w // 2 + 10, self.y + self.h - 30, self.w // 2 - 20, 25])
+                     [self.x + self.width // 2 + 10, self.y + self.height - 30, self.width // 2 - 20, 25])
         return 2
 
 
 class NitroBar():
-    def __init__(self, x, y, w, h, bg_color, color, font):
+    def __init__(self, x, y, width, heigth, bg_color, color, font):
         self.x = x
         self.y = y
-        self.w = w
-        self.h = h
-        self.bg_color = bg_color
+        self.width = width
+        self.height = heigth
+        self.background_color = bg_color
         self.color = color
-        self.bg_rect = pg.Rect(x, y, w, h)
+        self.background_rect = pg.Rect(x, y, width, heigth)
         self.font = font
 
     def draw(self, surf, val, cap):
-        pg.draw.rect(surf, self.bg_color, self.bg_rect)
-        rect = pg.Rect(self.x + 5, self.y + 5, int((self.w - 10) * max(val / cap, 0)), self.h - 10)
+        pg.draw.rect(surf, self.background_color, self.background_rect)
+        rect = pg.Rect(self.x + 5, self.y + 5, int((self.width - 10) * max(val / cap, 0)), self.height - 10)
         pg.draw.rect(surf, self.color, rect)
         nitro_text = self.font.render("NITRO", 1, (0, 0, 0))
-        surf.blit(nitro_text, nitro_text.get_rect(center=self.bg_rect.center))
+        surf.blit(nitro_text, nitro_text.get_rect(center=self.background_rect.center))
 
 
 class Engine:
@@ -154,26 +154,26 @@ class Engine:
         run = True
         stopwatch = self.start_timer()
 
-        curr_map = Map(self.map, x, y, stopwatch, self.player_name)
+        current_map = Map(self.map, x, y, stopwatch, self.player_name)
         map_img = pg.image.load("./data/grass.png")
-        curr_map.place_objects()
+        current_map.place_objects()
 
         id, name, engine = CSVParser(None, None, "./data/Cars.csv").read_car_statistics(self.car)
-        car = Car(id, Vector2D(50, 100), 0, 0, 10, engine, name, curr_map)
+        car = Car(id, Vector2D(50, 100), 0, 0, 10, engine, name, current_map)
         while run:
             dt = self.clock.tick(self.refresh)
             self.screen.blit(map_img, (0, 0))
 
-            curr_map.all_surfaces.draw(self.screen)
-            curr_map.all_surfaces.update()
+            current_map.all_surfaces.draw(self.screen)
+            current_map.all_surfaces.update()
 
-            curr_map.all_walls.draw(self.screen)
-            curr_map.all_walls.update()
+            current_map.all_walls.draw(self.screen)
+            current_map.all_walls.update()
 
-            self.spawn_booster(curr_map, dt)
+            self.spawn_booster(current_map, dt)
 
-            curr_map.all_boosters.draw(self.screen)
-            curr_map.all_boosters.update()
+            current_map.all_boosters.draw(self.screen)
+            current_map.all_boosters.update()
 
             self.nitro_bar.draw(self.screen, car.nitro_duration, car.nitro_capacity)
 
@@ -182,7 +182,7 @@ class Engine:
 
             self.screen.blit(car.image, (car.position.x, car.position.y))
 
-            self.display_laps(curr_map)
+            self.display_laps(current_map)
 
             pressed = False
             for event in pg.event.get():
@@ -194,8 +194,8 @@ class Engine:
             ticks = pg.time.get_ticks()
             stopwatch.display_timer(ticks)
 
-            if curr_map.won == 1:
-                r = self.results_popup.draw(self.screen, curr_map.times, pressed)
+            if current_map.won == 1:
+                r = self.results_popup.draw(self.screen, current_map.times, pressed)
                 if r == 0:
                     run = False
                 elif r == 1:
